@@ -22,8 +22,14 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['pluginname'] = 'ForClasses';
-$string['moyclass_settings'] = 'Settings ForClasses';
-$string['moyclass_settings_apikey'] = 'API key';
-$string['moyclass_settings_apikey_desc'] = 'Key for auth in CRM ForClasses';
-$string['moyclass_managepage'] = 'Manage ForClasses';
+if ($hassiteconfig) {
+
+    $ADMIN->add('localplugins', new admin_category('local_moyclass_category', get_string('pluginname', 'local_moyclass')));
+
+    $settings = new admin_settingpage('local_moyclass', get_string('moyclass_settings', 'local_moyclass'));
+    $ADMIN->add('local_moyclass_category', $settings);
+
+    $settings->add(new admin_setting_configtext('local_moyclass/apikey', get_string('moyclass_settings_apikey', 'local_moyclass'),
+        get_string('moyclass_settings_apikey_desc', 'local_moyclass'), ''));
+
+}

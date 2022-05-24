@@ -15,15 +15,30 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * ${PLUGINNAME} file description here.
+ * local_moyclass file description here.
  *
- * @package    ${PLUGINNAME}
- * @copyright  2022 mac <${USEREMAIL}>
+ * @package    local_moyclass
+ * @copyright  2022 mac <kamenik1@icloud.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['pluginname'] = 'ForClasses';
-$string['moyclass_settings'] = 'Settings ForClasses';
-$string['moyclass_settings_apikey'] = 'API key';
-$string['moyclass_settings_apikey_desc'] = 'Key for auth in CRM ForClasses';
-$string['moyclass_managepage'] = 'Manage ForClasses';
+namespace local_moyclass;
+
+use dml_exception;
+
+class manager {
+    /**
+     * Авторизация на бекенде, получение или обновление токена.
+     * @return bool
+     * @throws dml_exception
+     */
+    public function update_auth_token(): bool {
+        $api_key = get_config('local_moyclass', 'apikey');
+        $apiservice = new api_service();
+        try {
+            return $apiservice->getAuthToken($api_key);
+        } catch (dml_exception $e) {
+            return false;
+        }
+    }
+}

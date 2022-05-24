@@ -22,8 +22,18 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['pluginname'] = 'ForClasses';
-$string['moyclass_settings'] = 'Settings ForClasses';
-$string['moyclass_settings_apikey'] = 'API key';
-$string['moyclass_settings_apikey_desc'] = 'Key for auth in CRM ForClasses';
-$string['moyclass_managepage'] = 'Manage ForClasses';
+use local_moyclass\manager;
+
+require_once(__DIR__ . '/../../config.php');
+
+$PAGE->set_url(new moodle_url('/local/moyclass/manage.php'));
+$PAGE->set_context(\context_system::instance());
+$PAGE->set_heading(get_string('moyclass_managepage', "local_moyclass"));
+
+$manager = new manager();
+$result = $manager->update_auth_token();
+
+echo $OUTPUT->header();
+
+
+echo $OUTPUT->footer();

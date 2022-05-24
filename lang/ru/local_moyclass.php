@@ -23,3 +23,7 @@
  */
 
 $string['pluginname'] = 'Мой класс';
+$string['moyclass_settings'] = 'Настройки Мой класс';
+$string['moyclass_settings_apikey'] = 'Ключ API';
+$string['moyclass_settings_apikey_desc'] = 'Ключ для авторизации в CRM-системе Мой класс';
+$string['moyclass_managepage'] = 'Управление Мой класс';
