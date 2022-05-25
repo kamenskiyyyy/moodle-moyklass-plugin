@@ -24,7 +24,6 @@
 
 namespace local_moyclass;
 use dml_exception;
-use stdClass;
 
 require_once("{$CFG->libdir}/filelib.php");
 
@@ -33,20 +32,165 @@ class api_service {
 
     /**
      * Авторизация. Получение токена для работы с API.
-     * @param string $api_key
+     *
      * @return bool
      */
-    public function getAuthToken(string $api_key): bool {
-        global $DB;
+    public function getAuthToken() {
+        $api_key = get_config('local_moyclass', 'apikey');
         $url = self::$host_url . "auth/getToken";
-        $response = $this->api()->post($url, json_encode(['apiKey' => $api_key]));
-        $result = json_decode($response);
-        $read_record = new stdClass();
-        $read_record->accesstoken = $result->accessToken;
-        $read_record->expiresat = $result->expiresAt;
-        $read_record->active = true;
         try {
-            return $DB->insert_record('local_moyclass_auth', $read_record, false);
+            $response = $this->api()->post($url, json_encode(['apiKey' => $api_key]));
+            return json_decode($response);
+        } catch (dml_exception $e) {
+            return false;
+        }
+    }
+
+    /**
+     * Получение информации о работниках школы
+     *
+     * @return void
+     */
+    public function getManagers() {
+        $url = self::$host_url . "managers";
+        try {
+            $response = $this->api()->get($url);
+            return json_decode($response, true);
+        } catch (dml_exception $e) {
+            return false;
+        }
+    }
+
+    /**
+     * Получаем информацию об учениках школы
+     *
+     * @return false|mixed
+     */
+    public function getStudents() {
+        $url = self::$host_url . "users";
+        try {
+            $response = $this->api()->get($url);
+            return json_decode($response, true)['users'];
+        } catch (dml_exception $e) {
+            return false;
+        }
+    }
+
+    /**
+     * Информация о группах студентов
+     *
+     * @return false|mixed
+     */
+    public function getJoins() {
+        $url = self::$host_url . "joins";
+        try {
+            $response = $this->api()->get($url);
+            return json_decode($response, true)['joins'];
+        } catch (dml_exception $e) {
+            return false;
+        }
+    }
+
+    /**
+     * Информация о группах школы
+     *
+     * @return false|mixed
+     */
+    public function getClasses() {
+        $url = self::$host_url . "classes";
+        try {
+            $response = $this->api()->get($url);
+            return json_decode($response, true);
+        } catch (dml_exception $e) {
+            return false;
+        }
+    }
+
+    /**
+     * Информация о занятиях учеников школы
+     *
+     * @return false|mixed
+     */
+    public function getLessons() {
+        $url = self::$host_url . "lessons";
+        try {
+            $response = $this->api()->get($url);
+            return json_decode($response, true)['lessons'];
+        } catch (dml_exception $e) {
+            return false;
+        }
+    }
+
+    /**
+     * Получаем статусы клиентов
+     *
+     * @return void
+     */
+    public function getClientStatuses() {
+        $url = self::$host_url . "clientStatuses";
+        try {
+            $response = $this->api()->get($url);
+            return json_decode($response, true);
+        } catch (dml_exception $e) {
+            return false;
+        }
+    }
+
+    /**
+     * Получаем виды абонементов
+     *
+     * @return void
+     */
+    public function getSubscriptions() {
+        $url = self::$host_url . "subscriptions";
+        try {
+            $response = $this->api()->get($url);
+            return json_decode($response, true)['subscriptions'];
+        } catch (dml_exception $e) {
+            return false;
+        }
+    }
+
+    /**
+     * Получаем абонементы учеников
+     *
+     * @return void
+     */
+    public function getUserSubscriptions() {
+        $url = self::$host_url . "userSubscriptions";
+        try {
+            $response = $this->api()->get($url);
+            return json_decode($response, true)['subscriptions'];
+        } catch (dml_exception $e) {
+            return false;
+        }
+    }
+
+    /**
+     * Получаем успешные платежи учеников
+     *
+     * @return void
+     */
+    public function getPayments() {
+        $url = self::$host_url . "payments";
+        try {
+            $response = $this->api()->get($url);
+            return json_decode($response, true)['payments'];
+        } catch (dml_exception $e) {
+            return false;
+        }
+    }
+
+    /**
+     * Получаем счета на оплату для учеников
+     *
+     * @return void
+     */
+    public function getInvoices() {
+        $url = self::$host_url . "invoices";
+        try {
+            $response = $this->api()->get($url);
+            return json_decode($response, true)['invoices'];
         } catch (dml_exception $e) {
             return false;
         }
@@ -54,11 +198,13 @@ class api_service {
 
     /**
      * Config api for backend CRM
+     *
      * @return \curl
+     * @throws dml_exception*@throws dml_exception
      */
     private function api(): \curl {
         global $DB;
-        $x_access_token = $DB->get_record('local_moyclass_auth', ['active'=>'1']);
+        $x_access_token = $DB->get_record('local_moyclass_auth', ['active' => '1']);
         $header = [];
         if ($x_access_token) {
             $header =

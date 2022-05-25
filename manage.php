@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use local_moyclass\manager;
+use local_moyclass\api_service;
 
 require_once(__DIR__ . '/../../config.php');
 
@@ -30,10 +30,14 @@ $PAGE->set_url(new moodle_url('/local/moyclass/manage.php'));
 $PAGE->set_context(\context_system::instance());
 $PAGE->set_heading(get_string('moyclass_managepage', "local_moyclass"));
 
-$manager = new manager();
-$result = $manager->update_auth_token();
+$api_service = new api_service();
+$result = $api_service->getInvoices();
 
 echo $OUTPUT->header();
+
+echo "<pre>";
+print_r($result);
+echo "</pre>";
 
 
 echo $OUTPUT->footer();

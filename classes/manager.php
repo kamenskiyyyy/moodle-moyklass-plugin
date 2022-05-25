@@ -25,6 +25,7 @@
 namespace local_moyclass;
 
 use dml_exception;
+use stdClass;
 
 class manager {
     /**
@@ -32,13 +33,25 @@ class manager {
      * @return bool
      * @throws dml_exception
      */
-    public function update_auth_token(): bool {
-        $api_key = get_config('local_moyclass', 'apikey');
-        $apiservice = new api_service();
+    public function set_auth_token(): bool {
+        global $DB;
+        $api_service = new api_service();
+        $result = $api_service->getAuthToken();
+        $read_record = new stdClass();
+        $read_record->accesstoken = $result->accessToken;
+        $read_record->expiresat = $result->expiresAt;
+        $read_record->active = true;
         try {
-            return $apiservice->getAuthToken($api_key);
+            return $DB->insert_record('local_moyclass_auth', $read_record, false);
         } catch (dml_exception $e) {
             return false;
         }
+    }
+
+    public function set_managers() {
+        global $DB;
+        $api_service = new api_service();
+        $result = $api_service->getManagers();
+        return $result;
     }
 }
