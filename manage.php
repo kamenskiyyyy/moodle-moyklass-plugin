@@ -23,21 +23,32 @@
  */
 
 use local_moyclass\api_service;
+use local_moyclass\manager;
 
 require_once(__DIR__ . '/../../config.php');
 
 $PAGE->set_url(new moodle_url('/local/moyclass/manage.php'));
 $PAGE->set_context(\context_system::instance());
+$PAGE->set_title(get_string('moyclass_managepage', "local_moyclass"));
 $PAGE->set_heading(get_string('moyclass_managepage', "local_moyclass"));
 
-$api_service = new api_service();
-$result = $api_service->getInvoices();
+$manager = new manager();
+$result = $manager->set_students();
+
+$api = new api_service();
+//$result = $api->get_students();
 
 echo $OUTPUT->header();
 
 echo "<pre>";
 print_r($result);
+//foreach ($result[0]['attributes'] as $attribute => $alias) {
+//    if ($alias['attributeAlias'] === 'city') {
+//        $index = $attribute;
+//        print_r($result[0]['attributes'][$index]['value']);
+//    }
+//
+//}
 echo "</pre>";
-
 
 echo $OUTPUT->footer();

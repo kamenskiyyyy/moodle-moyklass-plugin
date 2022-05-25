@@ -35,7 +35,7 @@ class api_service {
      *
      * @return bool
      */
-    public function getAuthToken() {
+    public function get_auth_token() {
         $api_key = get_config('local_moyclass', 'apikey');
         $url = self::$host_url . "auth/getToken";
         try {
@@ -51,7 +51,7 @@ class api_service {
      *
      * @return void
      */
-    public function getManagers() {
+    public function get_managers(): array {
         $url = self::$host_url . "managers";
         try {
             $response = $this->api()->get($url);
@@ -66,10 +66,10 @@ class api_service {
      *
      * @return false|mixed
      */
-    public function getStudents() {
+    public function get_students(): array {
         $url = self::$host_url . "users";
         try {
-            $response = $this->api()->get($url);
+            $response = $this->api()->get($url, ['includePayLink' => 'true']);
             return json_decode($response, true)['users'];
         } catch (dml_exception $e) {
             return false;
@@ -81,7 +81,7 @@ class api_service {
      *
      * @return false|mixed
      */
-    public function getJoins() {
+    public function get_joins() {
         $url = self::$host_url . "joins";
         try {
             $response = $this->api()->get($url);
@@ -96,7 +96,7 @@ class api_service {
      *
      * @return false|mixed
      */
-    public function getClasses() {
+    public function get_classes(): array {
         $url = self::$host_url . "classes";
         try {
             $response = $this->api()->get($url);
@@ -111,7 +111,7 @@ class api_service {
      *
      * @return false|mixed
      */
-    public function getLessons() {
+    public function get_lessons(): array {
         $url = self::$host_url . "lessons";
         try {
             $response = $this->api()->get($url);
@@ -126,7 +126,7 @@ class api_service {
      *
      * @return void
      */
-    public function getClientStatuses() {
+    public function get_client_statuses(): array {
         $url = self::$host_url . "clientStatuses";
         try {
             $response = $this->api()->get($url);
@@ -141,7 +141,7 @@ class api_service {
      *
      * @return void
      */
-    public function getSubscriptions() {
+    public function get_subscriptions(): array {
         $url = self::$host_url . "subscriptions";
         try {
             $response = $this->api()->get($url);
@@ -156,7 +156,7 @@ class api_service {
      *
      * @return void
      */
-    public function getUserSubscriptions() {
+    public function get_user_subscriptions(): array {
         $url = self::$host_url . "userSubscriptions";
         try {
             $response = $this->api()->get($url);
@@ -171,7 +171,7 @@ class api_service {
      *
      * @return void
      */
-    public function getPayments() {
+    public function get_payments(): array {
         $url = self::$host_url . "payments";
         try {
             $response = $this->api()->get($url);
@@ -186,7 +186,7 @@ class api_service {
      *
      * @return void
      */
-    public function getInvoices() {
+    public function get_invoices() {
         $url = self::$host_url . "invoices";
         try {
             $response = $this->api()->get($url);

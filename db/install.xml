@@ -20,10 +20,11 @@
         <TABLE NAME="local_moyclass_managers" COMMENT="employees in this organization">
             <FIELDS>
                 <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="managerid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
                 <FIELD NAME="name" SEQUENCE="false" TYPE="text" NOTNULL="true" COMMENT="Полное имя"/>
                 <FIELD NAME="phone" SEQUENCE="false" TYPE="text" LENGTH="15" NOTNULL="true"/>
                 <FIELD NAME="email" SEQUENCE="false" TYPE="text" NOTNULL="true"/>
-                <FIELD NAME="iswork" SEQUENCE="false" TYPE="binary" NOTNULL="true" COMMENT="Работает ли сотрудник"/>
+                <FIELD NAME="iswork" SEQUENCE="false" TYPE="int" NOTNULL="false" COMMENT="Работает ли сотрудник"/>
             </FIELDS>
             <KEYS>
                 <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
@@ -32,10 +33,11 @@
         <TABLE NAME="local_moyclass_students" COMMENT="students in this organization">
             <FIELDS>
                 <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="studentid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
                 <FIELD NAME="name" SEQUENCE="false" TYPE="text" NOTNULL="true" COMMENT="Полное имя ученика"/>
-                <FIELD NAME="email" SEQUENCE="false" TYPE="text" NOTNULL="true"/>
-                <FIELD NAME="phone" SEQUENCE="false" TYPE="text" LENGTH="15" NOTNULL="true"/>
-                <FIELD NAME="balance" SEQUENCE="false" TYPE="int" LENGTH="15" NOTNULL="false" COMMENT="Баланс ученика"/>
+                <FIELD NAME="email" SEQUENCE="false" TYPE="text" NOTNULL="false"/>
+                <FIELD NAME="phone" SEQUENCE="false" TYPE="text" LENGTH="15" NOTNULL="false"/>
+                <FIELD NAME="balans" SEQUENCE="false" TYPE="int" LENGTH="15" NOTNULL="false" COMMENT="Баланс ученика"/>
                 <FIELD NAME="paylinkkey" SEQUENCE="false" TYPE="text" NOTNULL="true" COMMENT="Ключ оплаты"/>
                 <FIELD NAME="city" SEQUENCE="false" TYPE="text" NOTNULL="false" COMMENT="Город ученика"/>
                 <FIELD NAME="company" SEQUENCE="false" TYPE="text" NOTNULL="false" COMMENT="Место работы"/>
@@ -48,9 +50,10 @@
         <TABLE NAME="local_moyclass_joins" COMMENT="groups of students">
             <FIELDS>
                 <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="joinid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
                 <FIELD NAME="userid" SEQUENCE="false" TYPE="int" LENGTH="10" NOTNULL="true" COMMENT="ID ученика"/>
                 <FIELD NAME="classid" SEQUENCE="false" TYPE="int" LENGTH="10" NOTNULL="true" COMMENT="ID группы"/>
-                <FIELD NAME="price" SEQUENCE="false" TYPE="int" LENGTH="15" NOTNULL="true"
+                <FIELD NAME="price" SEQUENCE="false" TYPE="int" LENGTH="15" NOTNULL="false"
                        COMMENT="Цена (для групп с разовой оплатой)"/>
                 <FIELD NAME="statusid" SEQUENCE="false" TYPE="int" LENGTH="10" NOTNULL="true" COMMENT="Статус заявки"/>
                 <FIELD NAME="reminddate" SEQUENCE="false" TYPE="text" NOTNULL="false" COMMENT="Срок оплаты долга"/>
@@ -68,15 +71,16 @@
         <TABLE NAME="local_moyclass_classes" COMMENT="groups of organization">
             <FIELDS>
                 <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-                <FIELD NAME="name" SEQUENCE="false" TYPE="text" NOTNULL="true" COMMENT="Название"/>
+                <FIELD NAME="classid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="name" SEQUENCE="false" TYPE="text" NOTNULL="false" COMMENT="Название"/>
                 <FIELD NAME="begindate" SEQUENCE="false" TYPE="text" NOTNULL="false" COMMENT="Старт занятий"/>
                 <FIELD NAME="maxstudents" SEQUENCE="false" TYPE="text" NOTNULL="false"
                        COMMENT="Максимальное количество студентов в группе"/>
                 <FIELD NAME="status" SEQUENCE="false" TYPE="text" NOTNULL="true" COMMENT="Enum: 'opened' 'closed' 'archive'
 Текущее состояние группы. opened - набор открыт, closed - набор закрыт, archive - группа в архиве"/>
-                <FIELD NAME="price" SEQUENCE="false" TYPE="int" LENGTH="10" NOTNULL="true" COMMENT="Цена"/>
+                <FIELD NAME="price" SEQUENCE="false" TYPE="int" LENGTH="10" NOTNULL="false" COMMENT="Цена"/>
                 <FIELD NAME="pricecomment" SEQUENCE="false" TYPE="text" NOTNULL="false" COMMENT="Комментарий к цене"/>
-                <FIELD NAME="managerids" SEQUENCE="false" TYPE="float" NOTNULL="false"
+                <FIELD NAME="managerids" SEQUENCE="false" TYPE="binary" NOTNULL="false"
                        COMMENT="Список ID ведущих учителей группы"/>
             </FIELDS>
             <KEYS>
@@ -86,6 +90,7 @@
         <TABLE NAME="local_moyclass_lessons" COMMENT="lessons of classes">
             <FIELDS>
                 <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="lessonid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
                 <FIELD NAME="date" SEQUENCE="false" TYPE="text" NOTNULL="true" COMMENT="Дата проведения"/>
                 <FIELD NAME="begintime" SEQUENCE="false" TYPE="text" NOTNULL="true" COMMENT="Время начала"/>
                 <FIELD NAME="endtime" SEQUENCE="false" TYPE="text" NOTNULL="true" COMMENT="Время окончания"/>
@@ -94,7 +99,7 @@
                 <FIELD NAME="status" SEQUENCE="false" TYPE="text" NOTNULL="true" COMMENT="Статус занятия. 1 - Проведено, 0 - Не проведено"/>
                 <FIELD NAME="comment" SEQUENCE="false" TYPE="text" NOTNULL="false" COMMENT="Комментарий"/>
                 <FIELD NAME="maxstudents" SEQUENCE="false" TYPE="int" LENGTH="3" NOTNULL="false" COMMENT="Максимальное количество учеников на занятии"/>
-                <FIELD NAME="teacherids" SEQUENCE="false" TYPE="float" NOTNULL="false" COMMENT="Преподаватели"/>
+                <FIELD NAME="teacherids" SEQUENCE="false" TYPE="binary" NOTNULL="false" COMMENT="Преподаватель"/>
             </FIELDS>
             <KEYS>
                 <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
@@ -103,6 +108,7 @@
         <TABLE NAME="local_moyclass_clientstatuse" COMMENT="status of students">
             <FIELDS>
                 <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="clientstatusid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
                 <FIELD NAME="name" SEQUENCE="false" TYPE="text" NOTNULL="true" COMMENT="Название статуса"/>
             </FIELDS>
             <KEYS>
@@ -112,6 +118,7 @@
         <TABLE NAME="local_moyclass_subscriptions" COMMENT="types of subscriptions">
             <FIELDS>
                 <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="subscriptionid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
                 <FIELD NAME="name" SEQUENCE="false" TYPE="text" NOTNULL="false" COMMENT="Название"/>
                 <FIELD NAME="visitcount" SEQUENCE="false" TYPE="int" LENGTH="5" NOTNULL="false" COMMENT="Количество занятий, 0, если абонемент безлимитный"/>
                 <FIELD NAME="price" SEQUENCE="false" TYPE="int" LENGTH="10" NOTNULL="false" COMMENT="Стоимость"/>
@@ -124,6 +131,7 @@
         <TABLE NAME="local_moyclass_usersubscript" COMMENT="subscriptions of students">
             <FIELDS>
                 <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="usersubscriptionid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
                 <FIELD NAME="userid" SEQUENCE="false" TYPE="int" LENGTH="10" NOTNULL="true" COMMENT="ID ученика"/>
                 <FIELD NAME="subscriptionid" SEQUENCE="false" TYPE="int" LENGTH="10" NOTNULL="true" COMMENT="ID вида абонемента"/>
                 <FIELD NAME="price" SEQUENCE="false" TYPE="int" LENGTH="10" NOTNULL="false" COMMENT="Стоимость при продаже (с учетом скидки и доп. компенсации)"/>
@@ -132,8 +140,8 @@
                 <FIELD NAME="enddate" SEQUENCE="false" TYPE="text" NOTNULL="false" COMMENT="Дата окончания действия"/>
                 <FIELD NAME="remindsumm" SEQUENCE="false" TYPE="int" LENGTH="10" NOTNULL="false" COMMENT="Сумма долга к оплате"/>
                 <FIELD NAME="reminddate" SEQUENCE="false" TYPE="text" NOTNULL="false" COMMENT="Срок оплаты долга"/>
-                <FIELD NAME="classids" SEQUENCE="false" TYPE="float" NOTNULL="true" COMMENT="Группы, в которых действует абонемент"/>
-                <FIELD NAME="courseids" SEQUENCE="false" TYPE="float" NOTNULL="true" COMMENT="Программы, в которых действует абонемент"/>
+                <FIELD NAME="classids" SEQUENCE="false" TYPE="binary" NOTNULL="true" COMMENT="Группы, в которых действует абонемент"/>
+                <FIELD NAME="courseids" SEQUENCE="false" TYPE="binary" NOTNULL="false" COMMENT="Программы, в которых действует абонемент"/>
                 <FIELD NAME="period" SEQUENCE="false" TYPE="text" NOTNULL="false" COMMENT="Срок действия. При создании по умолчанию значение будет взято из основного абонемента"/>
                 <FIELD NAME="visitcount" SEQUENCE="false" TYPE="int" LENGTH="5" NOTNULL="false" COMMENT="Количество занятий в абонементе. При создании по умолчанию значение будет взято из основного абонемента"/>
                 <FIELD NAME="statusid" SEQUENCE="false" TYPE="int" LENGTH="10" NOTNULL="false" COMMENT="Статус абонемента: 1 - Не активный, 2 - Активный, 3 - Заморожен, 4 - Окончен"/>
@@ -145,12 +153,13 @@
         <TABLE NAME="local_moyclass_payments" COMMENT="payments of students">
             <FIELDS>
                 <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="paymentid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
                 <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="ID ученика"/>
                 <FIELD NAME="date" TYPE="text" NOTNULL="true" SEQUENCE="false" COMMENT="Дата платежа"/>
                 <FIELD NAME="summa" TYPE="int" LENGTH="5" NOTNULL="true" SEQUENCE="false" COMMENT="Сумма"/>
                 <FIELD NAME="usersubscriptionid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="ID абонемента"/>
                 <FIELD NAME="optype" TYPE="text" NOTNULL="true" SEQUENCE="false" COMMENT="Тип операции. income - приход, debit - списание, refund - возврат"/>
-                <FIELD NAME="paymenttypeid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Id типа оплаты"/>
+                <FIELD NAME="paymenttypeid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Id типа оплаты"/>
             </FIELDS>
             <KEYS>
                 <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
@@ -159,10 +168,10 @@
         <TABLE NAME="local_moyclass_invoices" COMMENT="invoices of students">
             <FIELDS>
                 <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="invoiceid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
                 <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="ID ученика"/>
                 <FIELD NAME="createdat" TYPE="text" NOTNULL="true" SEQUENCE="false" COMMENT="Дата создания счета"/>
                 <FIELD NAME="price" SEQUENCE="false" TYPE="int" LENGTH="10" NOTNULL="true" COMMENT="Сумма счета"/>
-                <FIELD NAME="nextsum" SEQUENCE="false" TYPE="int" LENGTH="10" NOTNULL="false" COMMENT="Сумма следующего платежа"/>
                 <FIELD NAME="payuntil" SEQUENCE="false" TYPE="text" NOTNULL="true" COMMENT="Срок оплаты счета"/>
                 <FIELD NAME="usersubscriptionid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="ID абонемента"/>
                 <FIELD NAME="payed" SEQUENCE="false" TYPE="int" LENGTH="10" NOTNULL="true" COMMENT="Оплачено по счету"/>

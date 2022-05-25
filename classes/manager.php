@@ -29,29 +29,313 @@ use stdClass;
 
 class manager {
     /**
-     * Авторизация на бекенде, получение или обновление токена.
+     * Устанавливаем новый токен авторизации.
+     *
      * @return bool
      * @throws dml_exception
      */
     public function set_auth_token(): bool {
         global $DB;
         $api_service = new api_service();
-        $result = $api_service->getAuthToken();
-        $read_record = new stdClass();
-        $read_record->accesstoken = $result->accessToken;
-        $read_record->expiresat = $result->expiresAt;
-        $read_record->active = true;
+        $result = $api_service->get_auth_token();
+        $dataobject = new stdClass();
+        $dataobject->accesstoken = $result->accessToken;
+        $dataobject->expiresat = $result->expiresAt;
+        $dataobject->active = true;
         try {
-            return $DB->insert_record('local_moyclass_auth', $read_record, false);
+            return $DB->insert_record('local_moyclass_auth', $dataobject, false);
         } catch (dml_exception $e) {
             return false;
         }
     }
 
+    /**
+     * Устанавливаем работников школы
+     *
+     * @return void
+     * @throws \dml_transaction_exception
+     * @throws dml_exception
+     */
     public function set_managers() {
         global $DB;
+        $DB->delete_records('local_moyclass_managers');
         $api_service = new api_service();
-        $result = $api_service->getManagers();
-        return $result;
+        $results = $api_service->get_managers();
+        $transaction = $DB->start_delegated_transaction();
+        foreach ($results as $result) {
+            $dataobject = new stdClass();
+            $dataobject->managerid = $result['id'];
+            $dataobject->name = $result['name'];
+            $dataobject->phone = $result['phone'];
+            $dataobject->email = $result['email'];
+            $dataobject->iswork = $result['isWork'];
+            $DB->insert_record('local_moyclass_managers', $dataobject, false);
+        }
+        $DB->commit_delegated_transaction($transaction);
+    }
+
+    /**
+     * Устанавливаем студентов школы
+     * @return void
+     * @throws \dml_transaction_exception
+     * @throws dml_exception
+     */
+    public function set_students() {
+        global $DB;
+        $DB->delete_records('local_moyclass_students');
+        $api_service = new api_service();
+        $results = $api_service->get_students();
+        $transaction = $DB->start_delegated_transaction();
+        foreach ($results as $result) {
+            $dataobject = new stdClass();
+            $dataobject->studentid = $result['id'];
+            $dataobject->name = $result['name'];
+            $dataobject->email = $result['email'];
+            $dataobject->phone = $result['phone'];
+            $dataobject->balans = $result['balans'];
+            $dataobject->paylinkkey = $result['payLinkKey'];
+            //foreach ($result['attributes'] as $attribute => $alias) {
+            //    if ($alias['attributeAlias'] === 'city') {
+            //        $index = $attribute;
+            //        if ($result[0]['attributes'][$index]['value']) {
+            //            $dataobject->city = $result[0]['attributes'][$index]['value'];
+            //        }
+            //    }
+            //    if ($alias['attributeAlias'] === 'company') {
+            //        $index = $attribute;
+            //        $dataobject->company = $result[0]['attributes'][$index]['value'];
+            //    }
+            //    if ($alias['attributeAlias'] === 'position') {
+            //        $index = $attribute;
+            //        $dataobject->position = $result[0]['attributes'][$index]['value'];
+            //    }
+            //}
+            $DB->insert_record('local_moyclass_students', $dataobject, false);
+        }
+        $DB->commit_delegated_transaction($transaction);
+    }
+
+    /**
+     * Устанавливаем информацию о группах студентов.
+     *
+     * @return void
+     * @throws \dml_transaction_exception
+     * @throws dml_exception
+     */
+    public function set_joins() {
+        global $DB;
+        $DB->delete_records('local_moyclass_joins');
+        $api_service = new api_service();
+        $results = $api_service->get_joins();
+        $transaction = $DB->start_delegated_transaction();
+        foreach ($results as $result) {
+            $dataobject = new stdClass();
+            $dataobject->joinid = $result['id'];
+            $dataobject->userid = $result['userId'];
+            $dataobject->classid = $result['classId'];
+            $dataobject->price = $result['price'];
+            $dataobject->statusid = $result['statusId'];
+            $dataobject->reminddate = $result['remindDate'];
+            $dataobject->remindsum = $result['remindSum'];
+            $dataobject->visits = $result['stats']['visits'];
+            $dataobject->nextrecord = $result['stats']['nextRecord'];
+            $dataobject->nonpayedlessons = $result['stats']['nonPayedLessons'];
+            $DB->insert_record('local_moyclass_joins', $dataobject, false);
+        }
+        $DB->commit_delegated_transaction($transaction);
+    }
+
+    /**
+     * Устанавливаем информацию о всех группах школы.
+     *
+     * @return void
+     * @throws \dml_transaction_exception
+     * @throws dml_exception
+     */
+    public function set_classes() {
+        global $DB;
+        $DB->delete_records('local_moyclass_classes');
+        $api_service = new api_service();
+        $results = $api_service->get_classes();
+        $transaction = $DB->start_delegated_transaction();
+        foreach ($results as $result) {
+            $dataobject = new stdClass();
+            $dataobject->classid = $result['id'];
+            $dataobject->name = $result['name'];
+            $dataobject->begindate = $result['beginDate'];
+            $dataobject->maxstudents = $result['maxStudents'];
+            $dataobject->status = $result['status'];
+            $dataobject->price = $result['price'];
+            $dataobject->pricecomment = $result['priceComment'];
+            $dataobject->managerids = json_encode($result['managerIds']);
+            $DB->insert_record('local_moyclass_classes', $dataobject, false);
+        }
+        $DB->commit_delegated_transaction($transaction);
+    }
+
+    /**
+     * Устанавливаем информацию о всех уроках школы.
+     *
+     * @return void
+     * @throws \dml_transaction_exception
+     * @throws dml_exception
+     */
+    public function set_lessons() {
+        global $DB;
+        $DB->delete_records('local_moyclass_lessons');
+        $api_service = new api_service();
+        $results = $api_service->get_lessons();
+        $transaction = $DB->start_delegated_transaction();
+        foreach ($results as $result) {
+            $dataobject = new stdClass();
+            $dataobject->lessonid = $result['id'];
+            $dataobject->date = $result['date'];
+            $dataobject->begintime = $result['beginTime'];
+            $dataobject->endtime = $result['endTime'];
+            $dataobject->createdat = $result['createdAt'];
+            $dataobject->classid = $result['classId'];
+            $dataobject->status = $result['status'];
+            $dataobject->comment = $result['comment'];
+            $dataobject->maxstudents = $result['maxStudents'];
+            $dataobject->teacherids = json_encode($result['teacherIds']);
+            $DB->insert_record('local_moyclass_lessons', $dataobject, false);
+        }
+        $DB->commit_delegated_transaction($transaction);
+    }
+
+    /**
+     *
+     * Устанавливаем статусы клиентов
+     *
+     * @return void
+     * @throws \dml_transaction_exception
+     * @throws dml_exception
+     */
+    public function set_client_statuses() {
+        global $DB;
+        $DB->delete_records('local_moyclass_clientstatuse');
+        $api_service = new api_service();
+        $results = $api_service->get_client_statuses();
+        $transaction = $DB->start_delegated_transaction();
+        foreach ($results as $result) {
+            $dataobject = new stdClass();
+            $dataobject->clientstatusid = $result['id'];
+            $dataobject->name = $result['name'];
+            $DB->insert_record('local_moyclass_clientstatuse', $dataobject, false);
+        }
+        $DB->commit_delegated_transaction($transaction);
+    }
+
+    /**
+     * Устанавливаем виды абонементов школы
+     *
+     * @return void
+     * @throws \dml_transaction_exception
+     * @throws dml_exception
+     */
+    public function set_subscriptions() {
+        global $DB;
+        $DB->delete_records('local_moyclass_subscriptions');
+        $api_service = new api_service();
+        $results = $api_service->get_subscriptions();
+        $transaction = $DB->start_delegated_transaction();
+        foreach ($results as $result) {
+            $dataobject = new stdClass();
+            $dataobject->subscriptionid = $result['id'];
+            $dataobject->name = $result['name'];
+            $dataobject->visitcount = $result['visitCount'];
+            $dataobject->price = $result['price'];
+            $dataobject->period = $result['period'];
+            $DB->insert_record('local_moyclass_subscriptions', $dataobject, false);
+        }
+        $DB->commit_delegated_transaction($transaction);
+    }
+
+    /**
+     * Устанавливаем купленные абонементы учеников школы
+     *
+     * @return void
+     * @throws \dml_transaction_exception
+     * @throws dml_exception
+     */
+    public function set_user_subscriptions() {
+        global $DB;
+        $DB->delete_records('local_moyclass_usersubscript');
+        $api_service = new api_service();
+        $results = $api_service->get_user_subscriptions();
+        $transaction = $DB->start_delegated_transaction();
+        foreach ($results as $result) {
+            $dataobject = new stdClass();
+            $dataobject->usersubscriptionid = $result['id'];
+            $dataobject->userid = $result['userId'];
+            $dataobject->subscriptionid = $result['subscriptionId'];
+            $dataobject->price = $result['price'];
+            $dataobject->selldate = $result['sellDate'];
+            $dataobject->begindate = $result['beginDate'];
+            $dataobject->enddate = $result['endDate'];
+            $dataobject->remindsumm = $result['remindSumm'];
+            $dataobject->reminddate = $result['remindDate'];
+            $dataobject->classids = json_encode($result['classIds']);
+            $dataobject->courseids = json_encode($result['courseIds']);
+            $dataobject->period = $result['period'];
+            $dataobject->visitcount = $result['visitCount'];
+            $dataobject->statusid = $result['statusId'];
+            $DB->insert_record('local_moyclass_usersubscript', $dataobject, false);
+        }
+        $DB->commit_delegated_transaction($transaction);
+    }
+
+    /**
+     * Устанавливаем успешные платежи учеников
+     *
+     * @return void
+     * @throws \dml_transaction_exception
+     * @throws dml_exception
+     */
+    public function set_payments() {
+        global $DB;
+        $DB->delete_records('local_moyclass_payments');
+        $api_service = new api_service();
+        $results = $api_service->get_payments();
+        $transaction = $DB->start_delegated_transaction();
+        foreach ($results as $result) {
+            $dataobject = new stdClass();
+            $dataobject->paymentid = $result['id'];
+            $dataobject->userid = $result['userId'];
+            $dataobject->date = $result['date'];
+            $dataobject->summa = $result['summa'];
+            $dataobject->usersubscriptionid = $result['userSubscriptionId'];
+            $dataobject->optype = $result['optype'];
+            $dataobject->paymenttypeid = $result['paymentTypeId'];
+            $DB->insert_record('local_moyclass_payments', $dataobject, false);
+        }
+        $DB->commit_delegated_transaction($transaction);
+    }
+
+    /**
+     * Устанавливаем счета на оплату для учеников школы
+     *
+     * @return void
+     * @throws \dml_transaction_exception
+     * @throws dml_exception
+     */
+    public function set_invoices() {
+        global $DB;
+        $DB->delete_records('local_moyclass_invoices');
+        $api_service = new api_service();
+        $results = $api_service->get_invoices();
+        $transaction = $DB->start_delegated_transaction();
+        foreach ($results as $result) {
+            $dataobject = new stdClass();
+            $dataobject->invoiceid = $result['id'];
+            $dataobject->userid = $result['userId'];
+            $dataobject->createdat = $result['createdAt'];
+            $dataobject->price = $result['price'];
+            $dataobject->payuntil = $result['payUntil'];
+            $dataobject->usersubscriptionid = $result['userSubscriptionId'];
+            $dataobject->payed = $result['payed'];
+            $DB->insert_record('local_moyclass_invoices', $dataobject, false);
+        }
+        $DB->commit_delegated_transaction($transaction);
     }
 }
