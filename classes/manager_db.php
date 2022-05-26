@@ -27,7 +27,10 @@ namespace local_moyclass;
 use dml_exception;
 use stdClass;
 
-class manager {
+/**
+ * Сервис для записи в базу данных результат получения данных по api
+ */
+class manager_db {
     /**
      * Устанавливаем новый токен авторизации.
      *
@@ -89,27 +92,29 @@ class manager {
         foreach ($results as $result) {
             $dataobject = new stdClass();
             $dataobject->studentid = $result['id'];
+            $dataobject->clientstateid = $result['clientStateId'];
             $dataobject->name = $result['name'];
             $dataobject->email = $result['email'];
             $dataobject->phone = $result['phone'];
             $dataobject->balans = $result['balans'];
             $dataobject->paylinkkey = $result['payLinkKey'];
-            //foreach ($result['attributes'] as $attribute => $alias) {
-            //    if ($alias['attributeAlias'] === 'city') {
-            //        $index = $attribute;
-            //        if ($result[0]['attributes'][$index]['value']) {
-            //            $dataobject->city = $result[0]['attributes'][$index]['value'];
-            //        }
-            //    }
-            //    if ($alias['attributeAlias'] === 'company') {
-            //        $index = $attribute;
-            //        $dataobject->company = $result[0]['attributes'][$index]['value'];
-            //    }
-            //    if ($alias['attributeAlias'] === 'position') {
-            //        $index = $attribute;
-            //        $dataobject->position = $result[0]['attributes'][$index]['value'];
-            //    }
-            //}
+            $attributes = $result['attributes'];
+            foreach ($attributes as $index => $alias) {
+                if ($alias['attributeAlias'] === 'city') {
+                    $dataobject->city = $attributes[$index]['value'];
+                }
+                if ($alias['attributeAlias'] === 'company') {
+                    $dataobject->company = $attributes[$index]['value'];
+                }
+                if ($alias['attributeAlias'] === 'position') {
+                    $dataobject->position = $attributes[$index]['value'];
+                }
+                if ($alias['attributeAlias'] === 'yazik_interfeisa') {
+                    $dataobject->lang = $attributes[$index]['value'];
+                } else {
+                    $dataobject->lang = "ru";
+                }
+            }
             $DB->insert_record('local_moyclass_students', $dataobject, false);
         }
         $DB->commit_delegated_transaction($transaction);

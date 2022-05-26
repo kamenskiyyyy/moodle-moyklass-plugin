@@ -27,6 +27,9 @@ use dml_exception;
 
 require_once("{$CFG->libdir}/filelib.php");
 
+/**
+ * Сервис для получения данных по api Мой класс
+ */
 class api_service {
     private static $host_url = "https://api.moyklass.com/v1/company/";
 
@@ -69,7 +72,7 @@ class api_service {
     public function get_students(): array {
         $url = self::$host_url . "users";
         try {
-            $response = $this->api()->get($url, ['includePayLink' => 'true']);
+            $response = $this->api()->get($url, ['includePayLink' => 'true', 'limit' => 500]);
             return json_decode($response, true)['users'];
         } catch (dml_exception $e) {
             return false;

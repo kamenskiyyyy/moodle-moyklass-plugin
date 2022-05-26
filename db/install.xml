@@ -34,11 +34,13 @@
             <FIELDS>
                 <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
                 <FIELD NAME="studentid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="clientstateid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
                 <FIELD NAME="name" SEQUENCE="false" TYPE="text" NOTNULL="true" COMMENT="Полное имя ученика"/>
                 <FIELD NAME="email" SEQUENCE="false" TYPE="text" NOTNULL="false"/>
                 <FIELD NAME="phone" SEQUENCE="false" TYPE="text" LENGTH="15" NOTNULL="false"/>
                 <FIELD NAME="balans" SEQUENCE="false" TYPE="int" LENGTH="15" NOTNULL="false" COMMENT="Баланс ученика"/>
                 <FIELD NAME="paylinkkey" SEQUENCE="false" TYPE="text" NOTNULL="true" COMMENT="Ключ оплаты"/>
+                <FIELD NAME="lang" SEQUENCE="false" TYPE="text" NOTNULL="false" COMMENT="Язык интерфейса ученика"/>
                 <FIELD NAME="city" SEQUENCE="false" TYPE="text" NOTNULL="false" COMMENT="Город ученика"/>
                 <FIELD NAME="company" SEQUENCE="false" TYPE="text" NOTNULL="false" COMMENT="Место работы"/>
                 <FIELD NAME="position" SEQUENCE="false" TYPE="text" NOTNULL="false" COMMENT="Должность"/>
