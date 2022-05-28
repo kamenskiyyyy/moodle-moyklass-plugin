@@ -30,37 +30,27 @@ global $DB;
 
 require_once(__DIR__ . '/../../config.php');
 
+$pluginname = 'moyclass';
+include($CFG->dirroot.'/local/' . $pluginname . '/widgets/test.php');
+
 $PAGE->set_url(new moodle_url('/local/moyclass/manage.php'));
 $PAGE->set_context(\context_system::instance());
 $PAGE->set_title(get_string('moyclass_managepage', "local_moyclass"));
 $PAGE->set_heading(get_string('moyclass_managepage', "local_moyclass"));
 
-$manager = new manager_db();
-//$result = $manager->set_students();
-
-//$result = $DB->get_record('local_moyclass_students', ['id'=>1]);
-
-$sync = new sync_users();
-$result = $sync->set_managers_in_moodle();
-//$check = $sync->check_status_client($result->clientstateid);
-
-$api = new api_service();
-//$results = $api->get_students();
+//$manager = new manager_db();
+//$result = $manager->set_lesson_records();
+//
+//$sync = new sync_users();
+//
+//$api = new api_service();
+//$result = $api->get_payments();
 
 echo $OUTPUT->header();
 
-echo "<pre>";
-//print_r('status ' . $check);
-print_r($result);
-//foreach ($results as $result) {
-//    $attributes = $result['attributes'];
-//    foreach ($attributes as $index => $alias) {
-//        if ($alias['attributeAlias'] === 'city') {
-//            //print_r($attributes[$index]['value']);
-//            print_r($alias);
-//        }
-//    }
-//}
-echo "</pre>";
+//echo test();
+//echo "<pre>";
+//print_r($result);
+//echo "</pre>";
 
 echo $OUTPUT->footer();

@@ -115,10 +115,28 @@ class api_service {
      * @return false|mixed
      */
     public function get_lessons(): array {
-        $url = self::$host_url . "lessons";
+        $first_date = date("Y-m-d", strtotime("-30 days"));
+        $second_date = date("Y-m-d", strtotime("30 days"));
+        $url = self::$host_url . "lessons?date={$first_date}&date={$second_date}&limit=500";
         try {
             $response = $this->api()->get($url);
             return json_decode($response, true)['lessons'];
+        } catch (dml_exception $e) {
+            return false;
+        }
+    }
+
+    /**
+     * Получаем список записей учеников на занятия
+     * @return array|false
+     */
+    public function get_lesson_records(): array {
+        $first_date = date("Y-m-d", strtotime("-30 days"));
+        $second_date = date("Y-m-d", strtotime("30 days"));
+        $url = self::$host_url . "lessonRecords?date={$first_date}&date={$second_date}&limit=500";
+        try {
+            $response = $this->api()->get($url);
+            return json_decode($response, true)['lessonRecords'];
         } catch (dml_exception $e) {
             return false;
         }
@@ -177,7 +195,7 @@ class api_service {
     public function get_payments(): array {
         $url = self::$host_url . "payments";
         try {
-            $response = $this->api()->get($url);
+            $response = $this->api()->get($url, ['optype'=>'income']);
             return json_decode($response, true)['payments'];
         } catch (dml_exception $e) {
             return false;

@@ -209,6 +209,33 @@ class manager_db {
     }
 
     /**
+     * Устанавливаем информацию о записях на все уроки школы
+     *
+     * @return void
+     * @throws \dml_transaction_exception
+     * @throws dml_exception
+     */
+    public function set_lesson_records() {
+        global $DB;
+        $DB->delete_records('local_moyclass_lessonsrecord');
+        $api_service = new api_service();
+        $results = $api_service->get_lesson_records();
+        $transaction = $DB->start_delegated_transaction();
+        foreach ($results as $result) {
+            $dataobject = new stdClass();
+            $dataobject->userid = $result['userId'];
+            $dataobject->lessonid = $result['lessonId'];
+            $dataobject->free = $result['free'];
+            $dataobject->visit = $result['visit'];
+            $dataobject->visit = $result['visit'];
+            $dataobject->goodreason = $result['goodReason'];
+            $dataobject->test = $result['test'];
+            $DB->insert_record('local_moyclass_lessonsrecord', $dataobject, false);
+        }
+        $DB->commit_delegated_transaction($transaction);
+    }
+
+    /**
      *
      * Устанавливаем статусы клиентов
      *
