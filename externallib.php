@@ -17,13 +17,29 @@
 /**
  * local_moyclass file description here.
  *
- * @package    ${PLUGINNAME}
- * @copyright  2022 Kamenev Nikolay kamenik1@icloud.com
+ * @package    local_moyclass
+ * @copyright  2022 mac <kamenik1@icloud.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2022052840;        // The current plugin version (Date: YYYYMMDDXX).
-$plugin->requires  = 2022041900;        // Requires this Moodle version.
-$plugin->component = 'local_moyclass';      // Full name of the plugin (used for diagnostics)
+use local_moyclass\actions;
+
+require_once($CFG->libdir . '/externallib.php');
+
+class local_moyclass_external extends external_api {
+    public static function delete_record($recordid): string {
+        $params = self::validate_parameters(self::delete_record_parameters(), ['recordid' => $recordid]);
+        $actions = new actions();
+        return $actions->cancel_lesson($recordid);
+    }
+
+    public static function delete_record_parameters() {
+        return new external_function_parameters(['recordid' => new external_value(PARAM_INT, 'id of record')],);
+    }
+
+    public static function delete_record_returns() {
+        return new external_value(PARAM_BOOL, 'Вы отменили урок');
+    }
+}

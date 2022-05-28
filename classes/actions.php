@@ -24,14 +24,19 @@
 
 namespace local_moyclass;
 
+use local_moyclass\api_service;
+
 class actions {
     public function cancel_lesson($recordId) {
         global $DB;
         $transaction = $DB->start_delegated_transaction();
-        $DB->delete_records('local_moyclass_lessonsrecord', ['recordid' => $recordId]);
-        $DB->commit_delegated_transaction($transaction);
+        $removeDB = $DB->delete_records('local_moyclass_lessonsrecord', ['recordid' => "$recordId"]);
         $api = new api_service();
-        $api->cancel_lesson($recordId);
-        \core\notification::add("Занятие успешно отменено", \core\notification::SUCCESS);
+        $removeApi = $api->cancel_lesson($recordId);
+        if ($removeDB && $removeApi) {
+            $DB->commit_delegated_transaction($transaction);
+            \core\notification::add("Урок успешно отменен", \core\notification::SUCCESS);
+        }
+        return true;
     }
 }

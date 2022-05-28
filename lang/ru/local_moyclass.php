@@ -27,3 +27,8 @@ $string['moyclass_settings'] = 'Настройки Мой класс';
 $string['moyclass_settings_apikey'] = 'Ключ API';
 $string['moyclass_settings_apikey_desc'] = 'Ключ для авторизации в CRM-системе Мой класс';
 $string['moyclass_managepage'] = 'Кабинет ученика';
+$string['moyclass_delete_record_title'] = 'Отмена урока';
+$string['moyclass_delete_record_desc'] = 'Вы уверены, что хотите отменить этот урок?';
+$string['moyclass_delete_record_loading'] = 'Отмена...';
+$string['moyclass_delete_record_fail'] = 'Ошибка отмены занятия';
+

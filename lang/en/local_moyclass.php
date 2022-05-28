@@ -27,3 +27,8 @@ $string['moyclass_settings'] = 'Settings ForClasses';
 $string['moyclass_settings_apikey'] = 'API key';
 $string['moyclass_settings_apikey_desc'] = 'Key for auth in CRM ForClasses';
 $string['moyclass_managepage'] = 'Manage ForClasses';
+$string['moyclass_delete_record_title'] = 'Cancel lesson?';
+$string['moyclass_delete_record_desc'] = 'Are you sure you want to cancel this lesson?';
+$string['moyclass_delete_record_loading'] = 'Canceling...';
+$string['moyclass_delete_record_fail'] = 'Error cancel lesson';
+

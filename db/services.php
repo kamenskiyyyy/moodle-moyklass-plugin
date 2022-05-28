@@ -15,15 +15,21 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * local_moyclass file description here.
+ * ${PLUGINNAME} file description here.
  *
  * @package    ${PLUGINNAME}
- * @copyright  2022 Kamenev Nikolay kamenik1@icloud.com
+ * @copyright  2022 mac <${USEREMAIL}>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
-
-$plugin->version   = 2022052840;        // The current plugin version (Date: YYYYMMDDXX).
-$plugin->requires  = 2022041900;        // Requires this Moodle version.
-$plugin->component = 'local_moyclass';      // Full name of the plugin (used for diagnostics)
+$functions = [
+    'local_moyclass_delete_record' => [
+        'classname' => 'local_moyclass_external',
+        'methodname' => 'delete_record',
+        'classpath' => 'local/moyclass/externallib.php',
+        'description' => "Deletes a record",
+        'type' => 'write',
+        'ajax' => true,
+        'capabilities' => '',
+    ]
+];

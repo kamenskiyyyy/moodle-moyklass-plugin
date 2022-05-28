@@ -33,6 +33,7 @@ $PAGE->set_url(new moodle_url("/local/moyclass/index.php"));
 $PAGE->set_context(\context_system::instance());
 $PAGE->set_title(get_string('moyclass_managepage', "local_moyclass"));
 $PAGE->set_heading(get_string('moyclass_managepage', "local_moyclass"));
+$PAGE->requires->js_call_amd('local_moyclass/confirm');
 
 //$manager = new manager_db();
 //$manager->set_lesson_records();

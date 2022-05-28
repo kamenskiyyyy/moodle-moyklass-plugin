@@ -217,11 +217,16 @@ class api_service {
         }
     }
 
-    public function cancel_lesson($recordId) {
+    /**
+     * Отменяем урок
+     * @param $recordId
+     * @return bool
+     */
+    public function cancel_lesson($recordId): bool {
         $url = self::$host_url . "lessonRecords/" . $recordId;
         try {
-            $response = $this->api()->delete($url);
-            return json_decode($response, true);
+            $this->api()->delete($url);
+            return true;
         } catch (dml_exception $e) {
             return false;
         }
