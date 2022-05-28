@@ -39,6 +39,7 @@ class manager_db {
      */
     public function set_auth_token(): bool {
         global $DB;
+        $DB->delete_records('local_moyclass_auth');
         $api_service = new api_service();
         $result = $api_service->get_auth_token();
         $dataobject = new stdClass();
