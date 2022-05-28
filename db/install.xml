@@ -151,6 +151,7 @@
         <TABLE NAME="local_moyclass_usersubscript" COMMENT="subscriptions of students">
             <FIELDS>
                 <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="externalid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Пользовательский номер абонемента"/>
                 <FIELD NAME="usersubscriptionid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
                 <FIELD NAME="userid" SEQUENCE="false" TYPE="int" LENGTH="10" NOTNULL="true" COMMENT="ID ученика"/>
                 <FIELD NAME="subscriptionid" SEQUENCE="false" TYPE="int" LENGTH="10" NOTNULL="true" COMMENT="ID вида абонемента"/>
@@ -160,11 +161,14 @@
                 <FIELD NAME="enddate" SEQUENCE="false" TYPE="text" NOTNULL="false" COMMENT="Дата окончания действия"/>
                 <FIELD NAME="remindsumm" SEQUENCE="false" TYPE="int" LENGTH="10" NOTNULL="false" COMMENT="Сумма долга к оплате"/>
                 <FIELD NAME="reminddate" SEQUENCE="false" TYPE="text" NOTNULL="false" COMMENT="Срок оплаты долга"/>
-                <FIELD NAME="classids" SEQUENCE="false" TYPE="binary" NOTNULL="true" COMMENT="Группы, в которых действует абонемент"/>
+                <FIELD NAME="classids" SEQUENCE="false" TYPE="int" LENGTH="10" NOTNULL="true" COMMENT="Группа, в которой действует абонемент"/>
                 <FIELD NAME="courseids" SEQUENCE="false" TYPE="binary" NOTNULL="false" COMMENT="Программы, в которых действует абонемент"/>
                 <FIELD NAME="period" SEQUENCE="false" TYPE="text" NOTNULL="false" COMMENT="Срок действия. При создании по умолчанию значение будет взято из основного абонемента"/>
                 <FIELD NAME="visitcount" SEQUENCE="false" TYPE="int" LENGTH="3" NOTNULL="false" COMMENT="Количество занятий в абонементе. При создании по умолчанию значение будет взято из основного абонемента"/>
                 <FIELD NAME="statusid" SEQUENCE="false" TYPE="int" LENGTH="1" NOTNULL="false" COMMENT="Статус абонемента: 1 - Не активный, 2 - Активный, 3 - Заморожен, 4 - Окончен"/>
+                <FIELD NAME="totalbilled" SEQUENCE="false" TYPE="int" LENGTH="2" NOTNULL="false" COMMENT="Списано из из абонемента (расход)"/>
+                <FIELD NAME="totalvisited" SEQUENCE="false" TYPE="int" LENGTH="2" NOTNULL="false" COMMENT="Использованно посещений"/>
+                <FIELD NAME="totalburned" SEQUENCE="false" TYPE="int" LENGTH="2" NOTNULL="false" COMMENT="Сгорело занятий"/>
             </FIELDS>
             <KEYS>
                 <KEY NAME="primary" TYPE="primary" FIELDS="id"/>

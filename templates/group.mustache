@@ -1,0 +1,14 @@
+{{#group}}
+    <div class="card bg-light">
+        <div class="d-flex">
+            <div class="col-md-6 card-body">
+                <h5 class="card-title">{{name_group}}</h5>
+                <h6 class="card-subtitle text-muted">Онлайн</h6>
+            </div>
+            <div class="col-md-6 card-body">
+                {{#newNextDate}}<h5 class="card-title">Следующая запись: {{newNextDate}}</h5>{{/newNextDate}}
+                <h6 class="card-subtitle text-muted">Прошло уроков: {{visits}}</h6>
+            </div>
+        </div>
+    </div>
+{{/group}}

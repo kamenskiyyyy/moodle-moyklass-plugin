@@ -22,12 +22,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use local_moyclass\api_service, local_moyclass\manager_db, local_moyclass\actions;
+use local_moyclass\api_service, local_moyclass\manager_db, local_moyclass\actions, local_moyclass\dashboard;
 
 global $DB, $USER;
 $pluginname = 'moyclass';
 require_once(__DIR__ . '/../../config.php');
-include($CFG->dirroot . '/local/' . $pluginname . '/widgets/dashboard.php');
 
 $PAGE->set_url(new moodle_url("/local/moyclass/index.php"));
 $PAGE->set_context(\context_system::instance());
@@ -43,11 +42,13 @@ $PAGE->requires->js_call_amd('local_moyclass/confirm');
 //
 //$api = new api_service();
 
+$dashboard = new dashboard();
+
 echo $OUTPUT->header();
 
 //echo $USER->email;
 
-echo dashboard();
+echo $dashboard->render();
 //echo "<pre>";
 //print_r($result);
 //echo "</pre>";

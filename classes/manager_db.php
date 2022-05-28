@@ -299,6 +299,7 @@ class manager_db {
         $transaction = $DB->start_delegated_transaction();
         foreach ($results as $result) {
             $dataobject = new stdClass();
+            $dataobject->externalid = $result['externalId'];
             $dataobject->usersubscriptionid = $result['id'];
             $dataobject->userid = $result['userId'];
             $dataobject->subscriptionid = $result['subscriptionId'];
@@ -308,11 +309,14 @@ class manager_db {
             $dataobject->enddate = $result['endDate'];
             $dataobject->remindsumm = $result['remindSumm'];
             $dataobject->reminddate = $result['remindDate'];
-            $dataobject->classids = json_encode($result['classIds']);
+            $dataobject->classids = $result['mainClassId'];
             $dataobject->courseids = json_encode($result['courseIds']);
             $dataobject->period = $result['period'];
             $dataobject->visitcount = $result['visitCount'];
             $dataobject->statusid = $result['statusId'];
+            $dataobject->totalbilled = $result['stats']['totalBilled'];
+            $dataobject->totalvisited = $result['stats']['totalVisited'];
+            $dataobject->totalburned = $result['stats']['totalBurned'];
             $DB->insert_record('local_moyclass_usersubscript', $dataobject, false);
         }
         $DB->commit_delegated_transaction($transaction);
