@@ -224,10 +224,10 @@ class manager_db {
         $transaction = $DB->start_delegated_transaction();
         foreach ($results as $result) {
             $dataobject = new stdClass();
+            $dataobject->recordid = $result['id'];
             $dataobject->userid = $result['userId'];
             $dataobject->lessonid = $result['lessonId'];
             $dataobject->free = $result['free'];
-            $dataobject->visit = $result['visit'];
             $dataobject->visit = $result['visit'];
             $dataobject->goodreason = $result['goodReason'];
             $dataobject->test = $result['test'];

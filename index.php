@@ -22,33 +22,31 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use local_moyclass\api_service;
-use local_moyclass\manager_db;
-use local_moyclass\sync_users;
+use local_moyclass\api_service, local_moyclass\manager_db, local_moyclass\actions;
 
-global $DB;
-
-require_once(__DIR__ . '/../../config.php');
-
+global $DB, $USER;
 $pluginname = 'moyclass';
-include($CFG->dirroot.'/local/' . $pluginname . '/widgets/test.php');
+require_once(__DIR__ . '/../../config.php');
+include($CFG->dirroot . '/local/' . $pluginname . '/widgets/dashboard.php');
 
-$PAGE->set_url(new moodle_url('/local/moyclass/manage.php'));
+$PAGE->set_url(new moodle_url("/local/moyclass/index.php"));
 $PAGE->set_context(\context_system::instance());
 $PAGE->set_title(get_string('moyclass_managepage', "local_moyclass"));
 $PAGE->set_heading(get_string('moyclass_managepage', "local_moyclass"));
 
 //$manager = new manager_db();
-//$result = $manager->set_lesson_records();
+//$manager->set_lesson_records();
+//$manager->set_lessons();
 //
 //$sync = new sync_users();
 //
 //$api = new api_service();
-//$result = $api->get_payments();
 
 echo $OUTPUT->header();
 
-//echo test();
+//echo $USER->email;
+
+echo dashboard();
 //echo "<pre>";
 //print_r($result);
 //echo "</pre>";

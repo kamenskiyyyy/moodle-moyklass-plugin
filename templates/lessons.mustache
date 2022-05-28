@@ -1,95 +1,28 @@
-{{!
-    This file is part of Moodle - http://moodle.org/
+<div class="col-md-6">
+    <div class="card bg-light mb-3">
+        <div class="card-header">Ближайшие занятия</div>
+        <div class="card-body">
+            <div class="d-flex flex-column" style="gap: 1rem">
 
-    Moodle is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+<!--                {{#lesson}}-->
+<!--                    <div class="card">-->
+<!--                        <div class="row">-->
+<!--                            <div class="col-md-3 card-body">-->
+<!--                                <h5 class="card-title">{{date}}</h5>-->
+<!--                                <h6 class="card-subtitle mb-2 text-muted">{{begintime}}-{{endtime}}</h6>-->
+<!--                            </div>-->
+<!--                            <div class="col-md-9 card-body">-->
+<!--                                <h5 class="card-title">{{classid}}</h5>-->
+<!--                                <h6 class="card-subtitle mb-2 text-muted">Георгий Кунаев</h6>-->
+<!--                                <a href="#" class="card-link mt-5">Отменить</a>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                {{/lesson}}-->
 
-    Moodle is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+                {{{lessons}}}
 
-    You should have received a copy of the GNU General Public License
-    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-}}
-{{!
-    @template local_message/manage
-
-
-    Example context (json):
-    {
-
-    }
-}}
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-6">
-            <div class="card bg-light mb-3">
-                <div class="card-header">Ближайшие занятия</div>
-                <div class="card-body">
-                    <div class="d-flex flex-column" style="gap: 1rem">
-                        <div class="card">
-                            <div class="row">
-                                <div class="col-md-3 card-body">
-                                    <h5 class="card-title">31.05.22</h5>
-                                    <h6 class="card-subtitle mb-2 text-muted">18:00-20:00</h6>
-                                </div>
-                                <div class="col-md-9 card-body">
-                                    <h5 class="card-title">#НАПРАКТИКЕ — продвинутый уровень - НАПРАКТИКЕ 2.0 NA</h5>
-                                    <h6 class="card-subtitle mb-2 text-muted">Георгий Кунаев</h6>
-                                    <a href="#" class="card-link mt-5">Отменить</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="row">
-                                <div class="col-md-3 card-body">
-                                    <h5 class="card-title">31.05.22</h5>
-                                    <h6 class="card-subtitle mb-2 text-muted">18:00-20:00</h6>
-                                </div>
-                                <div class="col-md-9 card-body">
-                                    <h5 class="card-title">#НАПРАКТИКЕ — продвинутый уровень - НАПРАКТИКЕ 2.0 NA</h5>
-                                    <h6 class="card-subtitle mb-2 text-muted">Георгий Кунаев</h6>
-                                    <a href="#" class="card-link mt-5">Отменить</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="card bg-light mb-3">
-                <div class="card-header">Мои группы</div>
-                <div class="card-body">
-                    <h5 class="card-title">Light card title</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                        card's content.</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="card bg-light mb-3">
-                <div class="card-header">Мои абонементы</div>
-                <div class="card-body">
-                    <h5 class="card-title">Light card title</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                        card's content.</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="card bg-light mb-3">
-                <div class="card-header">Мои платежи и счета</div>
-                <div class="card-body">
-                    <h5 class="card-title">Light card title</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                        card's content.</p>
-                </div>
             </div>
         </div>
     </div>
 </div>
-

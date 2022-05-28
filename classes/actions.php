@@ -15,15 +15,23 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * ${PLUGINNAME} file description here.
+ * local_moyclass file description here.
  *
- * @package    ${PLUGINNAME}
- * @copyright  2022 mac <${USEREMAIL}>
+ * @package    local_moyclass
+ * @copyright  2022 mac <kamenik1@icloud.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['pluginname'] = 'Мой класс';
-$string['moyclass_settings'] = 'Настройки Мой класс';
-$string['moyclass_settings_apikey'] = 'Ключ API';
-$string['moyclass_settings_apikey_desc'] = 'Ключ для авторизации в CRM-системе Мой класс';
-$string['moyclass_managepage'] = 'Кабинет ученика';
+namespace local_moyclass;
+
+class actions {
+    public function cancel_lesson($recordId) {
+        global $DB;
+        $transaction = $DB->start_delegated_transaction();
+        $DB->delete_records('local_moyclass_lessonsrecord', ['recordid' => $recordId]);
+        $DB->commit_delegated_transaction($transaction);
+        $api = new api_service();
+        $api->cancel_lesson($recordId);
+        \core\notification::add("Занятие успешно отменено", \core\notification::SUCCESS);
+    }
+}

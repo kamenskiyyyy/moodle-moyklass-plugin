@@ -217,6 +217,16 @@ class api_service {
         }
     }
 
+    public function cancel_lesson($recordId) {
+        $url = self::$host_url . "lessonRecords/" . $recordId;
+        try {
+            $response = $this->api()->delete($url);
+            return json_decode($response, true);
+        } catch (dml_exception $e) {
+            return false;
+        }
+    }
+
     /**
      * Config api for backend CRM
      *
@@ -234,7 +244,6 @@ class api_service {
             $header =
                 ['Content-Type: application/json', 'Accept: application/json', 'x-access-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9'];
         }
-
         $curl = new \curl();
         $curl->setHeader($header);
         return $curl;
