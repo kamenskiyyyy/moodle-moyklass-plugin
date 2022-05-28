@@ -30,16 +30,16 @@ use local_moyclass\manager_db;
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Автоматическая синхронизация данных из CRM Мой класс в LMS Moodle
+ * Автоматическая синхронизация видов абонементов из CRM Мой класс в LMS Moodle
  */
-class sync_info extends \core\task\scheduled_task {
+class upgrade_subscriptions extends \core\task\scheduled_task {
     /**
      * Return the task's name as shown in admin screens.
      *
      * @return string
      */
     public function get_name() {
-        return "Обновить все данные о школе в базе данных";
+        return "Обновить виды абонементов школы";
     }
 
     /**
@@ -48,27 +48,7 @@ class sync_info extends \core\task\scheduled_task {
     public function execute() {
         $manager = new manager_db();
         try {
-            $manager->set_managers();
-            sleep(30);
-            $manager->set_students();
-            sleep(30);
-            $manager->set_joins();
-            sleep(30);
-            $manager->set_classes();
-            sleep(30);
-            $manager->set_lessons();
-            sleep(30);
-            $manager->set_lesson_records();
-            sleep(30);
-            $manager->set_client_statuses();
-            sleep(30);
             $manager->set_subscriptions();
-            sleep(30);
-            $manager->set_user_subscriptions();
-            sleep(30);
-            $manager->set_payments();
-            sleep(30);
-            $manager->set_invoices();
         } catch (dml_exception $e) {
         }
     }

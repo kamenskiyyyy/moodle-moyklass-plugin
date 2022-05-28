@@ -26,7 +26,17 @@ defined('MOODLE_INTERNAL') || die();
 
 $tasks = [
     [
-        'classname' => '\local_moyclass\task\sync_info',
+        'classname' => '\local_moyclass\task\upgrade_token',
+        'blocking' => 0,
+        'minute' => '0',
+        'hour' => '0',
+        'day' => '*',
+        'month' => '*',
+        'dayofweek' => '5',
+        'disabled' => 0
+    ],
+    [
+        'classname' => '\local_moyclass\task\upgrade_classes',
         'blocking' => 0,
         'minute' => '*/15',
         'hour' => '*',
@@ -36,13 +46,103 @@ $tasks = [
         'disabled' => 0
     ],
     [
-        'classname' => '\local_moyclass\task\upgrade_token',
+        'classname' => '\local_moyclass\task\upgrade_client_statuses',
         'blocking' => 0,
-        'minute' => '0',
-        'hour' => '0',
+        'minute' => '*/15',
+        'hour' => '*',
         'day' => '*',
         'month' => '*',
-        'dayofweek' => '5',
+        'dayofweek' => '*',
+        'disabled' => 0
+    ],
+    [
+        'classname' => '\local_moyclass\task\upgrade_invoices',
+        'blocking' => 0,
+        'minute' => '*/15',
+        'hour' => '*',
+        'day' => '*',
+        'month' => '*',
+        'dayofweek' => '*',
+        'disabled' => 0
+    ],
+    [
+        'classname' => '\local_moyclass\task\upgrade_joins',
+        'blocking' => 0,
+        'minute' => '*/15',
+        'hour' => '*',
+        'day' => '*',
+        'month' => '*',
+        'dayofweek' => '*',
+        'disabled' => 0
+    ],
+    [
+        'classname' => '\local_moyclass\task\upgrade_lessons',
+        'blocking' => 0,
+        'minute' => '*/15',
+        'hour' => '*',
+        'day' => '*',
+        'month' => '*',
+        'dayofweek' => '*',
+        'disabled' => 0
+    ],
+    [
+        'classname' => '\local_moyclass\task\upgrade_lessons_records',
+        'blocking' => 0,
+        'minute' => '*/15',
+        'hour' => '*',
+        'day' => '*',
+        'month' => '*',
+        'dayofweek' => '*',
+        'disabled' => 0
+    ],
+    [
+        'classname' => '\local_moyclass\task\upgrade_managers',
+        'blocking' => 0,
+        'minute' => '*/15',
+        'hour' => '*',
+        'day' => '*',
+        'month' => '*',
+        'dayofweek' => '*',
+        'disabled' => 0
+    ],
+    [
+        'classname' => '\local_moyclass\task\upgrade_payments',
+        'blocking' => 0,
+        'minute' => '*/15',
+        'hour' => '*',
+        'day' => '*',
+        'month' => '*',
+        'dayofweek' => '*',
+        'disabled' => 0
+    ],
+    [
+        'classname' => '\local_moyclass\task\upgrade_students',
+        'blocking' => 0,
+        'minute' => '*/15',
+        'hour' => '*',
+        'day' => '*',
+        'month' => '*',
+        'dayofweek' => '*',
+        'disabled' => 0
+    ],
+    [
+        'classname' => '\local_moyclass\task\upgrade_subscriptions',
+        'blocking' => 0,
+        'minute' => '*/15',
+        'hour' => '*',
+        'day' => '*',
+        'month' => '*',
+        'dayofweek' => '*',
+        'disabled' => 0
+    ],
+    [
+        'classname' => '\local_moyclass\task\upgrade_user_subscriptions',
+        'blocking' => 0,
+        'minute' => '*/15',
+        'hour' => '*',
+        'day' => '*',
+        'month' => '*',
+        'dayofweek' => '*',
         'disabled' => 0
     ],
 ];

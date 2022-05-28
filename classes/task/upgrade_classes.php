@@ -17,13 +17,39 @@
 /**
  * local_moyclass file description here.
  *
- * @package    ${PLUGINNAME}
- * @copyright  2022 Kamenev Nikolay kamenik1@icloud.com
+ * @package    local_moyclass
+ * @copyright  2022 mac <kamenik1@icloud.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace local_moyclass\task;
+
+use dml_exception;
+use local_moyclass\manager_db;
+
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2022052820;        // The current plugin version (Date: YYYYMMDDXX).
-$plugin->requires  = 2022041900;        // Requires this Moodle version.
-$plugin->component = 'local_moyclass';      // Full name of the plugin (used for diagnostics)
+/**
+ * Автоматическая синхронизация информации о всех группах из CRM Мой класс в LMS Moodle
+ */
+class upgrade_classes extends \core\task\scheduled_task {
+    /**
+     * Return the task's name as shown in admin screens.
+     *
+     * @return string
+     */
+    public function get_name() {
+        return "Обновить информацию о всех группах школы";
+    }
+
+    /**
+     * Execute the task.
+     */
+    public function execute() {
+        $manager = new manager_db();
+        try {
+            $manager->set_classes();
+        } catch (dml_exception $e) {
+        }
+    }
+}
