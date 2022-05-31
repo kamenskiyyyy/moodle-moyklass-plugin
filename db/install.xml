@@ -181,7 +181,7 @@
                 <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="ID ученика"/>
                 <FIELD NAME="date" TYPE="text" NOTNULL="true" SEQUENCE="false" COMMENT="Дата платежа"/>
                 <FIELD NAME="summa" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Сумма"/>
-                <FIELD NAME="usersubscriptionid" TYPE="int" LENGTH="20" NOTNULL="false" SEQUENCE="false" COMMENT="ID абонемента"/>
+                <FIELD NAME="comment" SEQUENCE="false" TYPE="text" LENGTH="200" NOTNULL="false" COMMENT="Описание платежа" />
                 <FIELD NAME="optype" TYPE="char" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Тип операции. income - приход, debit - списание, refund - возврат"/>
                 <FIELD NAME="paymenttypeid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Id типа оплаты"/>
             </FIELDS>

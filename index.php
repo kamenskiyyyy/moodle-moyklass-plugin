@@ -33,10 +33,11 @@ $PAGE->set_context(\context_system::instance());
 $PAGE->set_title(get_string('moyclass_managepage', "local_moyclass"));
 $PAGE->set_heading(get_string('moyclass_managepage', "local_moyclass"));
 $PAGE->requires->js_call_amd('local_moyclass/confirm');
+$PAGE->set_pagelayout('standard');
 
 //$manager = new manager_db();
-//$manager->set_lesson_records();
-//$manager->set_lessons();
+//$manager->set_user_subscriptions();
+//$result = $manager->set_user_subscriptions();
 //
 //$sync = new sync_users();
 //
@@ -47,6 +48,7 @@ $dashboard = new dashboard();
 echo $OUTPUT->header();
 
 //echo $USER->email;
+
 
 echo $dashboard->render();
 //echo "<pre>";

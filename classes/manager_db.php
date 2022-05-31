@@ -341,7 +341,7 @@ class manager_db {
             $dataobject->userid = $result['userId'];
             $dataobject->date = $result['date'];
             $dataobject->summa = $result['summa'];
-            $dataobject->usersubscriptionid = $result['userSubscriptionId'];
+            $dataobject->comment = $result['comment'];
             $dataobject->optype = $result['optype'];
             $dataobject->paymenttypeid = $result['paymentTypeId'];
             $DB->insert_record('local_moyclass_payments', $dataobject, false);

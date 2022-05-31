@@ -1,14 +1,23 @@
 {{#subscription}}
-    <div class="card bg-light">
+    <div class="card bg-light position-relative">
+        {{#remindsumm}}
+            <span class="position-absolute translate-middle text-light badge rounded-pill bg-danger"
+                             style="right: -10px; top: -8px">
+                    Долг: <span class="visually-hidden">{{remindsumm}} &#8381;</span>
+            </span>
+        </span>
+        {{/remindsumm}}
+
         <div class="d-flex">
-            <div class="col-md-8 card-body">
-                <h5 class="card-title">{{name}}</h5>
-                <h6 class="card-subtitle mb-3 text-muted">{{name_group}}</h6>
-                <h6 class="card-subtitle text-muted">{{newSellDate}}</h6>
+            <div class="col-md-7 card-body">
+                <h5 class="card-title">{{name}} </h5>
+                <h6 class="card-subtitle text-muted">{{newSellDate}} - Сумма: {{price}} &#8381;</h6>
             </div>
-            <div class="col-md-4 card-body">
+            <div class="col-md-5 card-body">
                 {{#newNextDate}}<h5 class="card-title">Следующая запись: {{newNextDate}}</h5>{{/newNextDate}}
-                <h6 class="card-subtitle text-muted">Прошло уроков: {{visits}}</h6>
+                <h6 class="text-muted">Осталось уроков: {{oneClassLeft}} из {{visitcount}}</h6>
+                <h6 class="text-muted">Период: {{newBeginDate}} - {{newEndDate}}</h6>
+                {{#totalburned}}<h6 class="text-muted">Сгорело занятий: {{totalburned}}</h6>{{/totalburned}}
             </div>
         </div>
 

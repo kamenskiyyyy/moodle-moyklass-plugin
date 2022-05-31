@@ -30,8 +30,8 @@ class subscriptions {
     public function get_subscriptions() {
         global $OUTPUT, $DB, $USER;
         // TODO: в будущем дожен быть email от $USER->email
-        $student = $DB->get_record("local_moyclass_students", ['email' => "pavlyshin96@mail.ru"]);
-        $user_subscriptions = $DB->get_records('local_moyclass_usersubscript', ['userid' => $student->studentid]);
+        $student = $DB->get_record("local_moyclass_students", ['email' => "79217821386@mail.ru"]);
+        $user_subscriptions = $DB->get_records('local_moyclass_usersubscript', ['userid' => $student->studentid, /* 'statusid' => 2 */]);
         $subscriptions = '';
 
         $error = new pages();
@@ -58,21 +58,17 @@ class subscriptions {
             return $error->error_alert("Абонемент не найден");
         }
 
-        $classes_array = json_decode($user_subscription->classids);
-        $classes_string = '';
-        foreach ($classes_array as $class) {
-            $result = $DB->get_record('local_moyclass_classes', ['classid'=>$class]);
-            $classes_string .= "$result->name ";
-        }
-
-        $originalSellDate = $user_subscription->selldate;
-        $newSellDate = date('d.m.Y', strtotime($originalSellDate));
+        $newSellDate = date('d.m.Y', strtotime($user_subscription->selldate));
+        $newBeginDate = date('d.m', strtotime($user_subscription->begindate));
+        $newEndDate = date('d.m.Y', strtotime($user_subscription->enddate));
 
         $templatecontext = (object) [
             'subscription' => $user_subscription,
             'name' => $subscription->name,
-            'name_group'=>$classes_string,
-            'newSellDate' => $newSellDate
+            'newSellDate' => $newSellDate,
+            'oneClassLeft'=> $user_subscription->visitcount - $user_subscription->totalvisited,
+            'newBeginDate'=>$newBeginDate,
+            'newEndDate'=>$newEndDate,
         ];
 
         return $OUTPUT->render_from_template('local_moyclass/subscription', $templatecontext);

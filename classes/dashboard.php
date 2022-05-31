@@ -24,22 +24,22 @@
 
 namespace local_moyclass;
 
-use local_moyclass\widgets\groups;
 use local_moyclass\widgets\lessons;
 use local_moyclass\widgets\subscriptions;
+use local_moyclass\widgets\payments;
 
 class dashboard {
     public function render() {
         global $OUTPUT;
 
         $lessons = new lessons();
-        $groups = new groups();
         $subscriptions = new subscriptions();
+        $payments = new payments();
 
         $templatecontext = (object) [
             'lessons' => $lessons->get_lessons(),
-            'groups' => $groups->get_groups(),
             'subscriptions' => $subscriptions->get_subscriptions(),
+            'payments' => $payments->get_payments()
         ];
 
         return $OUTPUT->render_from_template('local_moyclass/dashboard', $templatecontext);
