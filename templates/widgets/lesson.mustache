@@ -5,10 +5,17 @@
                 <h5 class="card-title">{{newDate}}</h5>
                 <h6 class="card-subtitle text-muted">{{begintime}}-{{endtime}}</h6>
             </div>
-            <div class="col-md-9 card-body">
+            <div class="col-md-6 card-body">
                 <h5 class="card-title">{{name_group}}</h5>
                 <h6 class="card-subtitle mb-2 text-muted">{{teachers}}</h6>
+                {{^block_cancel}}
                 <a href="#{{recordId}}" class="local_recordid{{recordId}} card-link local_moyclass_delete_button">Отменить</a>
+                {{/block_cancel}}
+            </div>
+            <div class="col-md-3 card-body align-items-center">
+                {{#visited}}
+                    <div class="alert alert-success" style="width: 120px;">Проведен</div>
+                {{/visited}}
             </div>
         </div>
     </div>

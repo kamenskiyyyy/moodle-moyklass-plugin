@@ -33,10 +33,10 @@ class lessons {
      * @throws \dml_exception
      */
     public function get_lessons() {
-        global $OUTPUT, $DB, $USER;
+        global $OUTPUT, $DB, $CFG, $USER;
         // TODO: в будущем дожен быть email от $USER->email
-        $student = $DB->get_record("local_moyclass_students", ['email' => "79217821386@mail.ru"]);
-        $records = $DB->get_records("local_moyclass_lessonsrecord", ['userid' => $student->studentid], "id DESC", "*", 0, 3);
+        $student = $DB->get_record("local_moyclass_students", ['email' => "kamenev.nikolaj2010@icloud.com"]);
+        $records = $DB->get_records("local_moyclass_lessonsrecord", ['userid' => $student->studentid, 'visit'=>0], "", "*", 0, 3);
         $lessons_with_data = '';
 
         $error = new pages();
@@ -50,9 +50,29 @@ class lessons {
 
         $templatecontext = (object) [
             'lessons' => $lessons_with_data,
+            'linkPageLessons' => $CFG->wwwroot . '/local/moyclass/lessons.php'
         ];
 
-        return $OUTPUT->render_from_template('local_moyclass/lessons', $templatecontext);
+        return $OUTPUT->render_from_template('local_moyclass/widgets/lessons', $templatecontext);
+    }
+
+    public function get_full_lessons() {
+        global $OUTPUT, $DB, $CFG, $USER;
+        // TODO: в будущем дожен быть email от $USER->email
+        $student = $DB->get_record("local_moyclass_students", ['email' => "kamenev.nikolaj2010@icloud.com"]);
+        $records = $DB->get_records("local_moyclass_lessonsrecord", ['userid' => $student->studentid], "id DESC", "*", 0, 0);
+        $lessons_with_data = '';
+
+        $error = new pages();
+        if (!$records) {
+            return $error->error_alert("Записи на занятия не найдены");
+        }
+
+        foreach ($records as $record) {
+            $lessons_with_data .= $this->get_lesson($record);
+        }
+
+        return $lessons_with_data;
     }
 
     /**
@@ -83,14 +103,18 @@ class lessons {
         $originalDate = $lesson->date;
         $newDate = date('d.m.Y', strtotime($originalDate));
 
+        $block_cancel = strtotime("$lesson->date $lesson->begintime")-strtotime('now') <= 3600;
+
         $templatecontext = (object) [
             'lesson' => $lesson,
             'newDate' => $newDate,
             'name_group' => $name_group->name,
             'teachers' => $teachers_string,
-            'recordId' => $record->recordid
+            'recordId' => $record->recordid,
+            'visited' => $record->visit,
+            'block_cancel' => $block_cancel
         ];
 
-        return $OUTPUT->render_from_template('local_moyclass/lesson', $templatecontext);
+        return $OUTPUT->render_from_template('local_moyclass/widgets/lesson', $templatecontext);
     }
 }

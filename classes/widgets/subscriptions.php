@@ -46,7 +46,7 @@ class subscriptions {
         $templatecontext = (object) ['subscriptions' => $subscriptions,
         ];
 
-        return $OUTPUT->render_from_template('local_moyclass/subscriptions', $templatecontext);
+        return $OUTPUT->render_from_template('local_moyclass/widgets/subscriptions', $templatecontext);
     }
 
     public function get_subscription($user_subscription) {
@@ -71,6 +71,6 @@ class subscriptions {
             'newEndDate'=>$newEndDate,
         ];
 
-        return $OUTPUT->render_from_template('local_moyclass/subscription', $templatecontext);
+        return $OUTPUT->render_from_template('local_moyclass/widgets/subscription', $templatecontext);
     }
 }

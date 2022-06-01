@@ -15,33 +15,29 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * local_moyclass file description here.
+ * ${PLUGINNAME} file description here.
  *
- * @package    local_moyclass
- * @copyright  2022 mac <kamenik1@icloud.com>
+ * @package    ${PLUGINNAME}
+ * @copyright  2022 mac <${USEREMAIL}>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_moyclass;
+global $PAGE, $OUTPUT;
+require_once(__DIR__ . '/../../config.php');
 
-use local_moyclass\widgets\lessons;
-use local_moyclass\widgets\subscriptions;
-use local_moyclass\widgets\payments;
+use local_moyclass\pages\lessons_page;
 
-class dashboard {
-    public function render() {
-        global $OUTPUT;
+$PAGE->set_url(new moodle_url("/local/moyclass/lessons.php"));
+$PAGE->set_context(\context_system::instance());
+$PAGE->set_title(get_string('moyclass_page_lessons_title', "local_moyclass"));
+$PAGE->set_heading(get_string('moyclass_page_lessons_title', "local_moyclass"));
+$PAGE->requires->js_call_amd('local_moyclass/confirm');
+$PAGE->set_pagelayout('standard');
 
-        $lessons = new lessons();
-        $subscriptions = new subscriptions();
-        $payments = new payments();
+echo $OUTPUT->header();
 
-        $templatecontext = (object) [
-            'lessons' => $lessons->get_lessons(),
-            'subscriptions' => $subscriptions->get_subscriptions(),
-            'payments' => $payments->get_payments()
-        ];
+$lessons_page = new lessons_page();
 
-        return $OUTPUT->render_from_template('local_moyclass/dashboard', $templatecontext);
-    }
-}
+echo $lessons_page->render();
+
+echo $OUTPUT->footer();

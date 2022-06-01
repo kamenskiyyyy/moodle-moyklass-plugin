@@ -18,17 +18,30 @@
  * local_moyclass file description here.
  *
  * @package    local_moyclass
- * @copyright  2022 mac <>
+ * @copyright  2022 mac <kamenik1@icloud.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_moyclass;
+namespace local_moyclass\pages;
 
-class pages {
-    public function error_alert($message) {
+use local_moyclass\widgets\lessons;
+use local_moyclass\widgets\subscriptions;
+use local_moyclass\widgets\invoices;
+
+class dashboard {
+    public function render() {
         global $OUTPUT;
-        $templatecontext = (object) ['message' => $message,
+
+        $invoices = new invoices();
+        $lessons = new lessons();
+        $subscriptions = new subscriptions();
+
+        $templatecontext = (object) [
+            'invoices' => $invoices->get_invoices(),
+            'lessons' => $lessons->get_lessons(),
+            'subscriptions' => $subscriptions->get_subscriptions(),
         ];
-        return $OUTPUT->render_from_template('local_moyclass/error_alert', $templatecontext);
+
+        return $OUTPUT->render_from_template('local_moyclass/pages/dashboard', $templatecontext);
     }
 }

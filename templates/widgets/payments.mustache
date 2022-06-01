@@ -1,0 +1,29 @@
+<div class="card border-success mb-3">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5>💰 Мои платежи и счета</h5>
+        <button class="btn btn-outline-success">Смотреть все</button>
+    </div>
+    <div class="card-body">
+        <div class="d-flex flex-column" style="gap: 1rem">
+
+            {{#payments}}
+                <div class="card bg-light">
+                    <div class="d-flex">
+                        <div class="col-md-3 card-body">
+                            <h5 class="card-title">Платеж</h5>
+                            <h6 class="card-subtitle text-muted">{{date}}</h6>
+                        </div>
+                        <div class="col-md-9 card-body">
+                            <h5 class="card-title">{{comment}}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">{{summa}} &#8381;</h6>
+                        </div>
+                    </div>
+                </div>
+            {{/payments}}
+
+        </div>
+    </div>
+</div>
+
+
+

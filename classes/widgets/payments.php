@@ -31,7 +31,7 @@ class payments {
         global $OUTPUT, $DB, $USER;
         // TODO: в будущем дожен быть email от $USER->email
         $student = $DB->get_record("local_moyclass_students", ['email' => "pavlyshin96@mail.ru"]);
-        $payments = $DB->get_records('local_moyclass_payments', ['userid' => $student->studentid]);
+        $payments = $DB->get_records('local_moyclass_payments', ['userid' => $student->studentid], "id DESC", "*", 0, 3);
 
         $error = new pages();
         if (!$payments) {
@@ -42,18 +42,6 @@ class payments {
             'payments' => array_values($payments),
         ];
 
-        return $OUTPUT->render_from_template('local_moyclass/payment', $templatecontext);
-    }
-
-    public function get_invoices() {
-        global $OUTPUT, $DB, $USER;
-        // TODO: в будущем дожен быть email от $USER->email
-        $student = $DB->get_record("local_moyclass_students", ['email' => "pavlyshin96@mail.ru"]);
-        $payments = $DB->get_records('local_moyclass_invoices', ['userid' => $student->studentid]);
-
-        $error = new pages();
-        if (!$payments) {
-            return $error->error_alert("Платежи отсутствуют");
-        }
+        return $OUTPUT->render_from_template('local_moyclass/widgets/payments', $templatecontext);
     }
 }

@@ -22,10 +22,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use local_moyclass\api_service, local_moyclass\manager_db, local_moyclass\actions, local_moyclass\dashboard;
+use local_moyclass\api_service, local_moyclass\manager_db, local_moyclass\actions, local_moyclass\pages\dashboard;
 
-global $DB, $USER;
-$pluginname = 'moyclass';
+global $PAGE, $OUTPUT;
 require_once(__DIR__ . '/../../config.php');
 
 $PAGE->set_url(new moodle_url("/local/moyclass/index.php"));
@@ -43,14 +42,13 @@ $PAGE->set_pagelayout('standard');
 //
 //$api = new api_service();
 
-$dashboard = new dashboard();
-
 echo $OUTPUT->header();
 
 //echo $USER->email;
 
-
+$dashboard = new dashboard();
 echo $dashboard->render();
+
 //echo "<pre>";
 //print_r($result);
 //echo "</pre>";

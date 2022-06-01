@@ -47,7 +47,7 @@ class groups {
             'groups' => $groups,
         ];
 
-        return $OUTPUT->render_from_template('local_moyclass/groups', $templatecontext);
+        return $OUTPUT->render_from_template('local_moyclass/widgets/groups', $templatecontext);
     }
 
     public function get_group($join) {
@@ -71,6 +71,6 @@ class groups {
             'group' => $join
         ];
 
-        return $OUTPUT->render_from_template('local_moyclass/group', $templatecontext);
+        return $OUTPUT->render_from_template('local_moyclass/widgets/group', $templatecontext);
     }
 }

@@ -15,21 +15,27 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * ${PLUGINNAME} file description here.
+ * local_moyclass file description here.
  *
- * @package    ${PLUGINNAME}
- * @copyright  2022 mac <${USEREMAIL}>
+ * @package    local_moyclass
+ * @copyright  2022 mac <kamenik1@icloud.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['pluginname'] = 'ForClasses';
-$string['moyclass_settings'] = 'Settings ForClasses';
-$string['moyclass_settings_apikey'] = 'API key';
-$string['moyclass_settings_apikey_desc'] = 'Key for auth in CRM ForClasses';
-$string['moyclass_managepage'] = 'Manage ForClasses';
-$string['moyclass_delete_record_title'] = 'Cancel lesson?';
-$string['moyclass_delete_record_desc'] = 'Are you sure you want to cancel this lesson?';
-$string['moyclass_delete_record_loading'] = 'Canceling...';
-$string['moyclass_delete_record_fail'] = 'Error cancel lesson';
-$string['moyclass_page_lessons_title'] = 'Lessons';
+namespace local_moyclass\pages;
 
+use local_moyclass\widgets\lessons;
+
+class lessons_page {
+    public function render() {
+        global $OUTPUT;
+
+        $lessons = new lessons();
+
+        $templatecontext = (object) [
+            'lessons' => $lessons->get_full_lessons(),
+        ];
+
+        return $OUTPUT->render_from_template('local_moyclass/pages/lessons', $templatecontext);
+    }
+}
