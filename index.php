@@ -23,6 +23,7 @@
  */
 
 use local_moyclass\api_service, local_moyclass\manager_db, local_moyclass\actions, local_moyclass\pages\dashboard;
+use local_moyclass\notifications\manager;
 
 global $PAGE, $OUTPUT;
 require_once(__DIR__ . '/../../config.php');
@@ -42,11 +43,14 @@ $PAGE->set_pagelayout('standard');
 //
 //$api = new api_service();
 
+$notifications = new manager();
+
 echo $OUTPUT->header();
 
 //echo $USER->email;
 
 $dashboard = new dashboard();
+//echo $notifications->send_info();
 echo $dashboard->render();
 
 //echo "<pre>";

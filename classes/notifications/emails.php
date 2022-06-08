@@ -17,13 +17,21 @@
 /**
  * local_moyclass file description here.
  *
- * @package    ${PLUGINNAME}
- * @copyright  2022 Kamenev Nikolay kamenik1@icloud.com
+ * @package    local_moyclass
+ * @copyright  2022 mac <kamenik1@icloud.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
+namespace local_moyclass\notifications;
 
-$plugin->version   = 2022060800;        // The current plugin version (Date: YYYYMMDDXX).
-$plugin->requires  = 2022041900;        // Requires this Moodle version.
-$plugin->component = 'local_moyclass';      // Full name of the plugin (used for diagnostics)
+class emails {
+    public function get_welcome_email () {
+        global $OUTPUT;
+
+        $templatecontext = (object) [
+            'name' => 'Вася',
+        ];
+
+        return $OUTPUT->render_from_template('local_moyclass/emails/welcome', $templatecontext);
+    }
+}
