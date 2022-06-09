@@ -24,34 +24,25 @@
 
 namespace local_moyclass\notifications;
 
-use context_user;
 use core\message\message;
 use core_user;
-use local_moyclass\notifications\emails;
-use stdClass;
 
 class manager {
     /**
-     * @throws \file_exception
-     * @throws \stored_file_creation_exception
      * @throws \coding_exception
      * @throws \dml_exception
      */
-    public function send_welcome_email() {
-        global $USER;
-        $user = $USER;
-
-        $email_templates = new emails();
+    public function send_email($userEmail, $subject, $body) {
         $message = new message();
         $message->component = 'local_moyclass';
         $message->name = 'info';
-        $message->userfrom = core_user::get_noreply_user(); // If the message is 'from' a specific user you can set them here
-        $message->userto = $user;
-        $message->subject = 'message subject 1';
+        $message->userfrom = core_user::get_noreply_user();
+        $message->userto = core_user::get_user_by_email($userEmail);
+        $message->subject = $subject;
         $message->fullmessage = 'message body';
-        $message->fullmessageformat = FORMAT_MARKDOWN;
-        $message->fullmessagehtml = $email_templates->get_welcome_email();
-        $message->notification = 1; // Because this is a notification generated from Moodle, not a user-to-user message
+        $message->fullmessageformat = FORMAT_HTML;
+        $message->fullmessagehtml = $body;
+        $message->notification = 1;
         return message_send($message);
     }
 }

@@ -26,12 +26,21 @@ namespace local_moyclass;
 
 use core_reportbuilder\local\filters\number;
 use dml_exception;
+use local_moyclass\notifications\emails;
+use local_moyclass\notifications\manager;
 use stdClass;
 
 /**
  * Сервис для синхронизации пользователей между CRM и Moodle
  */
 class sync_users {
+    /** Регистранция работников школы
+     *
+     * @throws \coding_exception
+     * @throws dml_exception
+     * @throws \dml_transaction_exception
+     * @throws \moodle_exception
+     */
     public function set_managers_in_moodle() {
         global $DB;
         $managers = $DB->get_records('local_moyclass_managers');
@@ -43,9 +52,13 @@ class sync_users {
                 $user->suspended = $this->check_is_work($manager->iswork);
                 $DB->update_record('user', $user);
             } else {
+                $password = generate_password();
+                $new_password = hash_internal_user_password($password);
                 $user = $this->create_new_user($manager);
                 $user->suspended = $this->check_is_work($manager->iswork);
+                $user->password = $new_password;
                 $DB->insert_record('user', $user);
+                $this->send_email_new_user($user, $password);
             }
         }
         $DB->commit_delegated_transaction($transaction);
@@ -94,6 +107,8 @@ class sync_users {
      * @return void
      * @throws \dml_transaction_exception
      * @throws dml_exception
+     * @throws \coding_exception
+     * @throws \moodle_exception
      */
     public function set_students_in_moodle() {
         global $DB;
@@ -106,10 +121,14 @@ class sync_users {
                 $user = $this->update_user($student, $is_user->id);
                 $user->suspended = $this->check_status_client($student->clientstateid);
                 $DB->update_record('user', $user);
-            } else {
+            } else if ($student->clientstateid == 121696) {
+                $password = generate_password();
+                $new_password = hash_internal_user_password($password);
                 $user = $this->create_new_user($student);
-                $user->suspended = $this->check_status_client($student->clientstateid);
+                $user->suspended = 0;
+                $user->password = $new_password;
                 $DB->insert_record('user', $user);
+                $this->send_email_new_user($user, $password);
             }
         }
         $DB->commit_delegated_transaction($transaction);
@@ -122,7 +141,7 @@ class sync_users {
      * @return int
      */
     private function check_status_client($clientstateid): int {
-        if ($clientstateid === "121696") {
+        if ($clientstateid == 121696) {
             return 0;
         } else {
             return 1;
@@ -143,8 +162,6 @@ class sync_users {
         $user->mnethostid = 1;
         $user->email = strtolower($student->email);
         $user->username = strtolower(strstr($student->email, '@', true));
-        $new_password = password_hash(uniqid(), PASSWORD_DEFAULT);
-        $user->password = $new_password;
         $names = explode(' ', $student->name);
         $user->lastname = $names[1] ?: "-";
         $user->firstname = $names[0];
@@ -153,6 +170,20 @@ class sync_users {
         $user->institution = $student->company ?: " ";
         $user->department = $student->position ?: " ";
         return $user;
+    }
+
+    /**
+     * Отправляем новому пользователю письмо после регистрации с задержкой
+     *
+     * @throws \coding_exception
+     * @throws dml_exception
+     */
+    private function send_email_new_user($user, $password) {
+        $notification = new manager();
+        $emails = new emails();
+
+        $message = $emails->get_welcome_email($user->firstname, $user->username, $password);
+        $notification->send_email($user->email, 'Welcome to Just Study', $message);
     }
 
     /**

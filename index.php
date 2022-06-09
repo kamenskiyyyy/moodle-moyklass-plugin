@@ -24,6 +24,7 @@
 
 use local_moyclass\api_service, local_moyclass\manager_db, local_moyclass\actions, local_moyclass\pages\dashboard;
 use local_moyclass\notifications\manager;
+use local_moyclass\sync_users;
 
 global $PAGE, $OUTPUT;
 require_once(__DIR__ . '/../../config.php');
@@ -39,10 +40,11 @@ $PAGE->set_pagelayout('standard');
 //$manager->set_user_subscriptions();
 //$result = $manager->set_user_subscriptions();
 //
-//$sync = new sync_users();
+$sync = new sync_users();
 //
 //$api = new api_service();
 
+$emails = new \local_moyclass\notifications\emails();
 $notifications = new manager();
 
 echo $OUTPUT->header();
@@ -50,7 +52,7 @@ echo $OUTPUT->header();
 //echo $USER->email;
 
 $dashboard = new dashboard();
-//echo $notifications->send_info();
+echo $sync->set_students_in_moodle();
 echo $dashboard->render();
 
 //echo "<pre>";

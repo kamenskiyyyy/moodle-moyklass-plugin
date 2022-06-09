@@ -25,11 +25,13 @@
 namespace local_moyclass\notifications;
 
 class emails {
-    public function get_welcome_email () {
+    public function get_welcome_email ($name, $login, $password) {
         global $OUTPUT;
 
         $templatecontext = (object) [
-            'name' => 'Вася',
+            'name' => $name,
+            "login" => $login,
+            "password" => $password
         ];
 
         return $OUTPUT->render_from_template('local_moyclass/emails/welcome', $templatecontext);
