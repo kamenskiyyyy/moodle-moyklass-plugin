@@ -32,12 +32,12 @@ class manager {
      * @throws \coding_exception
      * @throws \dml_exception
      */
-    public function send_email($userEmail, $subject, $body) {
+    public function send_email($userid, $subject, $body) {
         $message = new message();
         $message->component = 'local_moyclass';
         $message->name = 'info';
         $message->userfrom = core_user::get_noreply_user();
-        $message->userto = core_user::get_user_by_email($userEmail);
+        $message->userto = core_user::get_user($userid);
         $message->subject = $subject;
         $message->fullmessage = 'message body';
         $message->fullmessageformat = FORMAT_HTML;

@@ -52,7 +52,7 @@ class upgrade_managers extends \core\task\scheduled_task {
         try {
             $manager->set_managers();
             sleep(10);
-            $sync->set_managers_in_moodle();
+            $sync->check_managers_in_moodle();
         } catch (dml_exception $e) {
         }
     }

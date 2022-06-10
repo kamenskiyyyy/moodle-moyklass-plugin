@@ -52,7 +52,7 @@ class upgrade_students extends \core\task\scheduled_task {
         try {
             $manager->set_students();
             sleep(10);
-            $sync->set_students_in_moodle();
+            $sync->check_students_in_moodle();
         } catch (dml_exception $e) {
         }
     }

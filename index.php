@@ -52,7 +52,7 @@ echo $OUTPUT->header();
 //echo $USER->email;
 
 $dashboard = new dashboard();
-echo $sync->set_students_in_moodle();
+echo $sync->check_students_in_moodle();
 echo $dashboard->render();
 
 //echo "<pre>";

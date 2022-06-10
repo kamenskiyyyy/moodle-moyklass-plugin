@@ -54,6 +54,20 @@ class manager_db {
     }
 
     /**
+     * Проверяем статус работника. Если работает - вернет 1, если нет - вернет 0
+     *
+     * @param $isWork
+     * @return int
+     */
+    private function check_is_work($isWork): int {
+        if ($isWork == 1) {
+            return 0;
+        } else {
+            return 1;
+        }
+    }
+
+    /**
      * Устанавливаем работников школы
      *
      * @return void
@@ -72,14 +86,29 @@ class manager_db {
             $dataobject->name = $result['name'];
             $dataobject->phone = $result['phone'];
             $dataobject->email = $result['email'];
-            $dataobject->iswork = $result['isWork'];
+            $dataobject->isactive = $this->check_is_work($result['isWork']);
             $DB->insert_record('local_moyclass_managers', $dataobject, false);
         }
         $DB->commit_delegated_transaction($transaction);
     }
 
     /**
+     * Проверяем статус клиента. Если клиент активный, вернет 1, если нет, вернет 0
+     *
+     * @param number $clientstateid
+     * @return int
+     */
+    private function check_status_client($clientstateid): int {
+        if ($clientstateid == 121696) {
+            return 0;
+        } else {
+            return 1;
+        }
+    }
+
+    /**
      * Устанавливаем студентов школы
+     *
      * @return void
      * @throws \dml_transaction_exception
      * @throws dml_exception
@@ -93,6 +122,7 @@ class manager_db {
         foreach ($results as $result) {
             $dataobject = new stdClass();
             $dataobject->studentid = $result['id'];
+            $dataobject->isactive = $this->check_status_client($result['clientStateId']);
             $dataobject->clientstateid = $result['clientStateId'];
             $dataobject->name = $result['name'];
             $dataobject->email = $result['email'];

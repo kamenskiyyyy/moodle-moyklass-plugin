@@ -24,7 +24,7 @@
                 <FIELD NAME="name" SEQUENCE="false" TYPE="char" LENGTH="120" NOTNULL="true" COMMENT="Полное имя"/>
                 <FIELD NAME="phone" SEQUENCE="false" TYPE="char" DEFAULT="20" LENGTH="15" NOTNULL="true"/>
                 <FIELD NAME="email" SEQUENCE="false" TYPE="char" LENGTH="100" NOTNULL="true"/>
-                <FIELD NAME="iswork" SEQUENCE="false" TYPE="int" LENGTH="1" NOTNULL="false"
+                <FIELD NAME="isactive" SEQUENCE="false" TYPE="int" LENGTH="1" NOTNULL="false"
                        COMMENT="Работает ли сотрудник"/>
             </FIELDS>
             <KEYS>
@@ -36,6 +36,8 @@
                 <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
                 <FIELD NAME="studentid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
                 <FIELD NAME="clientstateid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="isactive" SEQUENCE="false" TYPE="int" LENGTH="1" NOTNULL="false"
+                       COMMENT="Учится ли студент"/>
                 <FIELD NAME="name" SEQUENCE="false" TYPE="char" LENGTH="250" NOTNULL="true"
                        COMMENT="Полное имя ученика"/>
                 <FIELD NAME="email" SEQUENCE="false" TYPE="char" LENGTH="100" NOTNULL="false"/>
