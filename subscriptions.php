@@ -22,21 +22,21 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use local_moyclass\pages\dashboard;
-
 global $PAGE, $OUTPUT;
 require_once(__DIR__ . '/../../config.php');
 
-$PAGE->set_url(new moodle_url("/local/moyclass/index.php"));
+use local_moyclass\pages\subscriptions_page;
+
+$PAGE->set_url(new moodle_url("/local/moyclass/subscriptions.php"));
 $PAGE->set_context(\context_system::instance());
-$PAGE->set_title(get_string('moyclass_managepage', "local_moyclass"));
-$PAGE->set_heading(get_string('moyclass_managepage', "local_moyclass"));
-$PAGE->requires->js_call_amd('local_moyclass/confirm');
+$PAGE->set_title(get_string('moyclass_page_subscriptions_title', "local_moyclass"));
+$PAGE->set_heading(get_string('moyclass_page_subscriptions_title', "local_moyclass"));
 $PAGE->set_pagelayout('standard');
 
 echo $OUTPUT->header();
 
-$dashboard = new dashboard();
-echo $dashboard->render();
+$subscriptions_page = new subscriptions_page();
+
+echo $subscriptions_page->render();
 
 echo $OUTPUT->footer();

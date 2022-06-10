@@ -34,8 +34,7 @@ class lessons {
      */
     public function get_lessons() {
         global $OUTPUT, $DB, $CFG, $USER;
-        // TODO: в будущем дожен быть email от $USER->email
-        $student = $DB->get_record("local_moyclass_students", ['email' => "kamenev.nikolaj2010@icloud.com"]);
+        $student = $DB->get_record("local_moyclass_students", ['email' => $USER->email]);
         $records = $DB->get_records("local_moyclass_lessonsrecord", ['userid' => $student->studentid, 'visit'=>0], "", "*", 0, 3);
         $lessons_with_data = '';
 
@@ -57,9 +56,8 @@ class lessons {
     }
 
     public function get_full_lessons() {
-        global $OUTPUT, $DB, $CFG, $USER;
-        // TODO: в будущем дожен быть email от $USER->email
-        $student = $DB->get_record("local_moyclass_students", ['email' => "kamenev.nikolaj2010@icloud.com"]);
+        global $DB, $USER;
+        $student = $DB->get_record("local_moyclass_students", ['email' => $USER->email]);
         $records = $DB->get_records("local_moyclass_lessonsrecord", ['userid' => $student->studentid], "id DESC", "*", 0, 0);
         $lessons_with_data = '';
 

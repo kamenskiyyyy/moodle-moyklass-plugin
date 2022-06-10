@@ -29,18 +29,20 @@ use local_moyclass\pages;
 class invoices {
     public function get_invoices() {
         global $OUTPUT, $DB, $USER;
-        // TODO: в будущем дожен быть email от $USER->email
-        $student = $DB->get_record("local_moyclass_students", ['email' => "79217821386@mail.ru"]);
+        $student = $DB->get_record("local_moyclass_students", ['email' => $USER->email]);
         $invoices = $DB->get_records('local_moyclass_invoices', ['userid' => $student->studentid, 'payed' => 0]);
         $invoices_with_render = '';
 
-        $error = new pages();
         if (!$invoices) {
             return null;
         }
 
         foreach ($invoices as $invoice) {
-            $invoices_with_render .= $this->get_invoice($invoice);
+            if (!$invoice->usersubscriptionid) {
+                return null;
+            } else {
+                $invoices_with_render .= $this->get_invoice($invoice);
+            }
         }
 
         $templatecontext = (object) ['invoices' => $invoices_with_render];
@@ -50,15 +52,14 @@ class invoices {
 
     public function get_invoice($invoice) {
         global $OUTPUT, $DB, $USER;
-        // TODO: в будущем дожен быть email от $USER->email
-        $student = $DB->get_record("local_moyclass_students", ['email' => "79217821386@mail.ru"]);
+        $student = $DB->get_record("local_moyclass_students", ['email' => $USER->email]);
         $user_subscription =
             $DB->get_record('local_moyclass_usersubscript', ["usersubscriptionid" => $invoice->usersubscriptionid]);
         $subscription = $DB->get_record('local_moyclass_subscriptions', ["subscriptionid" => $user_subscription->subscriptionid]);
 
         $error = new pages();
         if (!$user_subscription || !$subscription) {
-            return $error->error_alert('Абонемент не найден');
+            return $error->error_alert('Счет не найден');
         }
 
         $templatecontext = (object) [

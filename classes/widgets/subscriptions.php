@@ -28,10 +28,9 @@ use local_moyclass\pages;
 
 class subscriptions {
     public function get_subscriptions() {
-        global $OUTPUT, $DB, $USER;
-        // TODO: в будущем дожен быть email от $USER->email
-        $student = $DB->get_record("local_moyclass_students", ['email' => "79217821386@mail.ru"]);
-        $user_subscriptions = $DB->get_records('local_moyclass_usersubscript', ['userid' => $student->studentid, /* 'statusid' => 2 */]);
+        global $OUTPUT, $CFG, $DB, $USER;
+        $student = $DB->get_record("local_moyclass_students", ['email' => $USER->email]);
+        $user_subscriptions = $DB->get_records('local_moyclass_usersubscript', ['userid' => $student->studentid, 'statusid' => 2]);
         $subscriptions = '';
 
         $error = new pages();
@@ -43,7 +42,9 @@ class subscriptions {
             $subscriptions .= $this->get_subscription($user_subscription);
         }
 
-        $templatecontext = (object) ['subscriptions' => $subscriptions,
+        $templatecontext = (object) [
+            'subscriptions' => $subscriptions,
+            'linkPageSubscriptions' => $CFG->wwwroot . '/local/moyclass/subscriptions.php'
         ];
 
         return $OUTPUT->render_from_template('local_moyclass/widgets/subscriptions', $templatecontext);

@@ -32,4 +32,4 @@ $string['moyclass_delete_record_desc'] = 'Are you sure you want to cancel this l
 $string['moyclass_delete_record_loading'] = 'Canceling...';
 $string['moyclass_delete_record_fail'] = 'Error cancel lesson';
 $string['moyclass_page_lessons_title'] = 'Lessons';
-
+$string['moyclass_page_subscriptions_title'] = 'Subscriptions';

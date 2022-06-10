@@ -32,3 +32,4 @@ $string['moyclass_delete_record_desc'] = 'Вы уверены, что хотит
 $string['moyclass_delete_record_loading'] = 'Отмена...';
 $string['moyclass_delete_record_fail'] = 'Ошибка отмены занятия';
 $string['moyclass_page_lessons_title'] = 'Занятия';
+$string['moyclass_page_subscriptions_title'] = 'Абонементы';
