@@ -25,6 +25,7 @@
 namespace local_moyclass\pages;
 
 use local_moyclass\widgets\lessons;
+use local_moyclass\widgets\recording_for_lesson;
 use local_moyclass\widgets\subscriptions;
 use local_moyclass\widgets\invoices;
 
@@ -33,11 +34,13 @@ class dashboard {
         global $OUTPUT;
 
         $invoices = new invoices();
+        $recording = new recording_for_lesson();
         $lessons = new lessons();
         $subscriptions = new subscriptions();
 
         $templatecontext = (object) [
             'invoices' => $invoices->get_invoices(),
+            'recording' => $recording->render(),
             'lessons' => $lessons->get_lessons(),
             'subscriptions' => $subscriptions->get_subscriptions(),
         ];
