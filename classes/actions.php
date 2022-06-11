@@ -35,7 +35,6 @@ class actions {
         $removeApi = $api->cancel_lesson($recordId);
         if ($removeDB && $removeApi) {
             $DB->commit_delegated_transaction($transaction);
-            \core\notification::add("Урок успешно отменен", \core\notification::SUCCESS);
         }
         return true;
     }

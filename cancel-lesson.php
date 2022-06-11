@@ -22,14 +22,19 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$functions = [
-    'local_moyclass_delete_record' => [
-        'classname' => 'local_moyclass_external',
-        'methodname' => 'delete_record',
-        'classpath' => 'local/moyclass/externallib.php',
-        'description' => "Deletes a record",
-        'type' => 'write',
-        'ajax' => true,
-        'capabilities' => '',
-    ]
-];
+use local_moyclass\actions;
+
+global $PAGE, $OUTPUT, $CFG;
+require_once(__DIR__ . '/../../config.php');
+
+require_login();
+
+$PAGE->set_url(new moodle_url("/local/moyclass/cancel-lesson.php"));
+$PAGE->set_context(\context_system::instance());
+
+$recordid = optional_param('lessonid', null, PARAM_INT);
+
+$actions = new actions();
+$actions->cancel_lesson($recordid);
+
+redirect($CFG->wwwroot . '/my', get_string('moyclass_delete_record_success', 'local_moyclass'));

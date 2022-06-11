@@ -82,7 +82,7 @@ class lessons {
      * @throws \dml_exception
      */
     public function get_lesson($record) {
-        global $OUTPUT, $DB;
+        global $OUTPUT, $DB, $CFG;
         $lesson = $DB->get_record('local_moyclass_lessons', ["lessonid" => $record->lessonid]);
 
         $error = new pages();
@@ -110,7 +110,8 @@ class lessons {
             'teachers' => $teachers_string,
             'recordId' => $record->recordid,
             'visited' => $record->visit,
-            'block_cancel' => $block_cancel
+            'block_cancel' => $block_cancel,
+            'cancelUrl' => $CFG->wwwroot . '/local/moyclass/cancel-lesson.php'
         ];
 
         return $OUTPUT->render_from_template('local_moyclass/widgets/lesson', $templatecontext);
