@@ -30,7 +30,7 @@ class recording_for_lesson {
 
         $templatecontext = (object) [];
 
-        // TODO: не забыть включить запись на занятия по email
+        // TODO: не забыть включить запись на занятия по email в CRM
         $this->set_user_email();
 
         return $OUTPUT->render_from_template('local_moyclass/widgets/recording_for_lesson', $templatecontext);
