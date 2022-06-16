@@ -39,18 +39,14 @@ class manager_db {
      */
     public function set_auth_token(): bool {
         global $DB;
-        $DB->delete_records('local_moyclass_auth');
         $api_service = new api_service();
         $result = $api_service->get_auth_token();
         $dataobject = new stdClass();
         $dataobject->accesstoken = $result->accessToken;
         $dataobject->expiresat = $result->expiresAt;
         $dataobject->active = true;
-        try {
-            return $DB->insert_record('local_moyclass_auth', $dataobject, false);
-        } catch (dml_exception $e) {
-            return false;
-        }
+
+        return $DB->insert_record('local_moyclass_auth', $dataobject, false);
     }
 
     /**
@@ -73,7 +69,16 @@ class manager_db {
             $dataobject->phone = $result['phone'];
             $dataobject->email = $result['email'];
             $dataobject->isactive = $result['isWork'];
-            $DB->insert_record('local_moyclass_managers', $dataobject, false);
+
+            $is_saved = $DB->get_record('local_moyclass_managers', ['managerid' => $result['id']]);
+            if ($is_saved) {
+                $dataobject->id = $is_saved->id;
+                $dataobject->timemodified = time();
+                $DB->update_record('local_moyclass_managers', $dataobject);
+            } else {
+                $dataobject->timecreated = time();
+                $DB->insert_record('local_moyclass_managers', $dataobject, false);
+            }
         }
         $DB->commit_delegated_transaction($transaction);
     }
@@ -132,7 +137,16 @@ class manager_db {
                     $dataobject->lang = "ru";
                 }
             }
-            $DB->insert_record('local_moyclass_students', $dataobject, false);
+
+            $is_saved = $DB->get_record('local_moyclass_students', ['studentid' => $result['id']]);
+            if ($is_saved) {
+                $dataobject->id = $is_saved->id;
+                $dataobject->timemodified = time();
+                $DB->update_record('local_moyclass_students', $dataobject);
+            } else {
+                $dataobject->timecreated = time();
+                $DB->insert_record('local_moyclass_students', $dataobject, false);
+            }
         }
         $DB->commit_delegated_transaction($transaction);
     }
@@ -146,7 +160,6 @@ class manager_db {
      */
     public function set_joins() {
         global $DB;
-        $DB->delete_records('local_moyclass_joins');
         $api_service = new api_service();
         $results = $api_service->get_joins();
         $transaction = $DB->start_delegated_transaction();
@@ -162,7 +175,16 @@ class manager_db {
             $dataobject->visits = $result['stats']['visits'];
             $dataobject->nextrecord = $result['stats']['nextRecord'];
             $dataobject->nonpayedlessons = $result['stats']['nonPayedLessons'];
-            $DB->insert_record('local_moyclass_joins', $dataobject, false);
+
+            $is_saved = $DB->get_record('local_moyclass_joins', ['joinid' => $result['id']]);
+            if ($is_saved) {
+                $dataobject->id = $is_saved->id;
+                $dataobject->timemodified = time();
+                $DB->update_record('local_moyclass_joins', $dataobject);
+            } else {
+                $dataobject->timecreated = time();
+                $DB->insert_record('local_moyclass_joins', $dataobject, false);
+            }
         }
         $DB->commit_delegated_transaction($transaction);
     }
@@ -176,7 +198,6 @@ class manager_db {
      */
     public function set_classes() {
         global $DB;
-        $DB->delete_records('local_moyclass_classes');
         $api_service = new api_service();
         $results = $api_service->get_classes();
         $transaction = $DB->start_delegated_transaction();
@@ -190,7 +211,16 @@ class manager_db {
             $dataobject->price = $result['price'];
             $dataobject->pricecomment = $result['priceComment'];
             $dataobject->managerids = json_encode($result['managerIds']);
-            $DB->insert_record('local_moyclass_classes', $dataobject, false);
+
+            $is_saved = $DB->get_record('local_moyclass_classes', ['classid' => $result['id']]);
+            if ($is_saved) {
+                $dataobject->id = $is_saved->id;
+                $dataobject->timemodified = time();
+                $DB->update_record('local_moyclass_classes', $dataobject);
+            } else {
+                $dataobject->timecreated = time();
+                $DB->insert_record('local_moyclass_classes', $dataobject, false);
+            }
         }
         $DB->commit_delegated_transaction($transaction);
     }
@@ -204,8 +234,6 @@ class manager_db {
      */
     public function set_lessons() {
         global $DB;
-        $DB->delete_records('local_moyclass_lessons');
-        $DB->delete_records('local_moyclass_lessonsrecord');
         $api_service = new api_service();
         $results = $api_service->get_lessons();
         $transaction = $DB->start_delegated_transaction();
@@ -221,11 +249,17 @@ class manager_db {
             $dataobject->comment = $result['comment'];
             $dataobject->maxstudents = $result['maxStudents'];
             $dataobject->teacherids = json_encode($result['teacherIds']);
-            try {
-                $this->set_lesson_records($result);
+
+            $this->set_lesson_records($result);
+
+            $is_saved = $DB->get_record('local_moyclass_lessons', ['lessonid' => $result['id']]);
+            if ($is_saved) {
+                $dataobject->id = $is_saved->id;
+                $dataobject->timemodified = time();
+                $DB->update_record('local_moyclass_lessons', $dataobject);
+            } else {
+                $dataobject->timecreated = time();
                 $DB->insert_record('local_moyclass_lessons', $dataobject, false);
-            } catch (dml_exception $e) {
-                return $e;
             }
         }
         $DB->commit_delegated_transaction($transaction);
@@ -255,10 +289,15 @@ class manager_db {
             $dataobject->visit = $result['visit'];
             $dataobject->goodreason = $result['goodReason'];
             $dataobject->test = $result['test'];
-            try {
+
+            $is_saved = $DB->get_record('local_moyclass_lessonsrecord', ['recordid' => $result['id']]);
+            if ($is_saved) {
+                $dataobject->id = $is_saved->id;
+                $dataobject->timemodified = time();
+                $DB->update_record('local_moyclass_lessonsrecord', $dataobject);
+            } else {
+                $dataobject->timecreated = time();
                 $DB->insert_record('local_moyclass_lessonsrecord', $dataobject, false);
-            } catch (dml_exception $e) {
-                return $e;
             }
         }
         $DB->commit_delegated_transaction($transaction);
@@ -274,7 +313,6 @@ class manager_db {
      */
     public function set_client_statuses() {
         global $DB;
-        $DB->delete_records('local_moyclass_clientstatuse');
         $api_service = new api_service();
         $results = $api_service->get_client_statuses();
         $transaction = $DB->start_delegated_transaction();
@@ -282,7 +320,16 @@ class manager_db {
             $dataobject = new stdClass();
             $dataobject->clientstatusid = $result['id'];
             $dataobject->name = $result['name'];
-            $DB->insert_record('local_moyclass_clientstatuse', $dataobject, false);
+
+            $is_saved = $DB->get_record('local_moyclass_clientstatuse', ['clientstatusid' => $result['id']]);
+            if ($is_saved) {
+                $dataobject->id = $is_saved->id;
+                $dataobject->timemodified = time();
+                $DB->update_record('local_moyclass_clientstatuse', $dataobject);
+            } else {
+                $dataobject->timecreated = time();
+                $DB->insert_record('local_moyclass_clientstatuse', $dataobject, false);
+            }
         }
         $DB->commit_delegated_transaction($transaction);
     }
@@ -296,7 +343,6 @@ class manager_db {
      */
     public function set_subscriptions() {
         global $DB;
-        $DB->delete_records('local_moyclass_subscriptions');
         $api_service = new api_service();
         $results = $api_service->get_subscriptions();
         $transaction = $DB->start_delegated_transaction();
@@ -307,7 +353,16 @@ class manager_db {
             $dataobject->visitcount = $result['visitCount'];
             $dataobject->price = $result['price'];
             $dataobject->period = $result['period'];
-            $DB->insert_record('local_moyclass_subscriptions', $dataobject, false);
+
+            $is_saved = $DB->get_record('local_moyclass_subscriptions', ['subscriptionid' => $result['id']]);
+            if ($is_saved) {
+                $dataobject->id = $is_saved->id;
+                $dataobject->timemodified = time();
+                $DB->update_record('local_moyclass_subscriptions', $dataobject);
+            } else {
+                $dataobject->timecreated = time();
+                $DB->insert_record('local_moyclass_subscriptions', $dataobject, false);
+            }
         }
         $DB->commit_delegated_transaction($transaction);
     }
@@ -321,7 +376,6 @@ class manager_db {
      */
     public function set_user_subscriptions() {
         global $DB;
-        $DB->delete_records('local_moyclass_usersubscript');
         $api_service = new api_service();
         $results = $api_service->get_user_subscriptions();
         $transaction = $DB->start_delegated_transaction();
@@ -345,7 +399,16 @@ class manager_db {
             $dataobject->totalbilled = $result['stats']['totalBilled'];
             $dataobject->totalvisited = $result['stats']['totalVisited'];
             $dataobject->totalburned = $result['stats']['totalBurned'];
-            $DB->insert_record('local_moyclass_usersubscript', $dataobject, false);
+
+            $is_saved = $DB->get_record('local_moyclass_usersubscript', ['usersubscriptionid' => $result['id']]);
+            if ($is_saved) {
+                $dataobject->id = $is_saved->id;
+                $dataobject->timemodified = time();
+                $DB->update_record('local_moyclass_usersubscript', $dataobject);
+            } else {
+                $dataobject->timecreated = time();
+                $DB->insert_record('local_moyclass_usersubscript', $dataobject, false);
+            }
         }
         $DB->commit_delegated_transaction($transaction);
     }
@@ -359,7 +422,6 @@ class manager_db {
      */
     public function set_payments() {
         global $DB;
-        $DB->delete_records('local_moyclass_payments');
         $api_service = new api_service();
         $results = $api_service->get_payments();
         $transaction = $DB->start_delegated_transaction();
@@ -372,7 +434,16 @@ class manager_db {
             $dataobject->comment = $result['comment'];
             $dataobject->optype = $result['optype'];
             $dataobject->paymenttypeid = $result['paymentTypeId'];
-            $DB->insert_record('local_moyclass_payments', $dataobject, false);
+
+            $is_saved = $DB->get_record('local_moyclass_payments', ['paymentid' => $result['id']]);
+            if ($is_saved) {
+                $dataobject->id = $is_saved->id;
+                $dataobject->timemodified = time();
+                $DB->update_record('local_moyclass_payments', $dataobject);
+            } else {
+                $dataobject->timecreated = time();
+                $DB->insert_record('local_moyclass_payments', $dataobject, false);
+            }
         }
         $DB->commit_delegated_transaction($transaction);
     }
@@ -386,7 +457,6 @@ class manager_db {
      */
     public function set_invoices() {
         global $DB;
-        $DB->delete_records('local_moyclass_invoices');
         $api_service = new api_service();
         $results = $api_service->get_invoices();
         $transaction = $DB->start_delegated_transaction();
@@ -399,7 +469,16 @@ class manager_db {
             $dataobject->payuntil = $result['payUntil'];
             $dataobject->usersubscriptionid = $result['userSubscriptionId'];
             $dataobject->payed = $result['payed'];
-            $DB->insert_record('local_moyclass_invoices', $dataobject, false);
+
+            $is_saved = $DB->get_record('local_moyclass_invoices', ['invoiceid' => $result['id']]);
+            if ($is_saved) {
+                $dataobject->id = $is_saved->id;
+                $dataobject->timemodified = time();
+                $DB->update_record('local_moyclass_invoices', $dataobject);
+            } else {
+                $dataobject->timecreated = time();
+                $DB->insert_record('local_moyclass_invoices', $dataobject, false);
+            }
         }
         $DB->commit_delegated_transaction($transaction);
     }

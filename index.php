@@ -37,6 +37,9 @@ $PAGE->set_pagelayout('standard');
 
 echo $OUTPUT->header();
 
+$managerDB = new \local_moyclass\manager_db();
+$managerDB->set_managers();
+
 $dashboard = new dashboard();
 echo $dashboard->render();
 
