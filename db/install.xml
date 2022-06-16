@@ -116,6 +116,10 @@
             <FIELDS>
                 <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
                 <FIELD NAME="recordid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="date" SEQUENCE="false" TYPE="text" NOTNULL="true" COMMENT="Дата проведения"/>
+                <FIELD NAME="timestamp" SEQUENCE="false" TYPE="int" LENGTH="10" NOTNULL="true" COMMENT="Дата проведения в секундах"/>
+                <FIELD NAME="begintime" SEQUENCE="false" TYPE="text" NOTNULL="true" COMMENT="Время начала"/>
+                <FIELD NAME="endtime" SEQUENCE="false" TYPE="text" NOTNULL="true" COMMENT="Время окончания"/>
                 <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
                 <FIELD NAME="lessonid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
                 <FIELD NAME="free" SEQUENCE="false" TYPE="int" LENGTH="1" NOTNULL="false"/>

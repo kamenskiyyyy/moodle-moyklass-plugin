@@ -35,8 +35,8 @@ class lessons {
      */
     public function get_lessons() {
         global $OUTPUT, $DB, $CFG, $USER;
-        $student = $DB->get_record("local_moyclass_students", ['email' => $USER->email]);
-        $records = $DB->get_records("local_moyclass_lessonsrecord", ['userid' => $student->studentid, 'visit'=>0], "", "*", 0, 3);
+        $student = $DB->get_record("local_moyclass_students", ['email' => "kamenev.nikolaj2010@icloud.com"]);
+        $records = $DB->get_records("local_moyclass_lessonsrecord", ['userid' => $student->studentid, 'visit'=>0], "timestamp", "*", 0, 3);
         $lessons_with_data = '';
 
         $error = new pages();
@@ -57,10 +57,11 @@ class lessons {
     }
 
     public function get_full_lessons() {
-        global $DB, $USER;
-        $student = $DB->get_record("local_moyclass_students", ['email' => $USER->email]);
-        $records = $DB->get_records("local_moyclass_lessonsrecord", ['userid' => $student->studentid, 'visit'=>0], "", "*", 0, 0);
+        global $OUTPUT, $DB, $USER;
+        $student = $DB->get_record("local_moyclass_students", ['email' => "kamenev.nikolaj2010@icloud.com"]);
+        $records = $DB->get_records("local_moyclass_lessonsrecord", ['userid' => $student->studentid], "timestamp", "*", 0, 0);
         $lessons_with_data = '';
+        $last_lessons_with_data = '';
 
         $error = new pages();
         if (!$records) {
@@ -68,10 +69,19 @@ class lessons {
         }
 
         foreach ($records as $record) {
-            $lessons_with_data .= $this->get_lesson($record);
+            if ($record->visit == 1) {
+                $last_lessons_with_data .= $this->get_lesson($record);
+            } else {
+                $lessons_with_data .= $this->get_lesson($record);
+            }
         }
 
-        return $lessons_with_data;
+        $templatecontext = (object) [
+            'lessons_active' => $lessons_with_data,
+            'lessons_inactive' => $last_lessons_with_data,
+        ];
+
+        return $OUTPUT->render_from_template('local_moyclass/pages/lessons/accordion', $templatecontext);
     }
 
     /**

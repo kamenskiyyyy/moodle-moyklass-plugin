@@ -117,12 +117,12 @@ class api_service {
     public function get_lessons(): array {
         $first_date = date("Y-m-d", strtotime("-30 days"));
         $second_date = date("Y-m-d", strtotime("30 days"));
-        $url = self::$host_url . "lessons?date={$first_date}&date={$second_date}&limit=500";
+        $url = self::$host_url . "lessons?date={$first_date}&date={$second_date}&limit=500&includeRecords=true";
         try {
             $response = $this->api()->get($url);
             return json_decode($response, true)['lessons'];
         } catch (dml_exception $e) {
-            return false;
+            return $e;
         }
     }
 
