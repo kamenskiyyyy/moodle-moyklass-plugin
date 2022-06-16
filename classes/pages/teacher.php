@@ -17,13 +17,29 @@
 /**
  * local_moyclass file description here.
  *
- * @package    ${PLUGINNAME}
- * @copyright  2022 Kamenev Nikolay kamenik1@icloud.com
+ * @package    local_moyclass
+ * @copyright  2022 mac <kamenik1@icloud.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
+namespace local_moyclass\pages;
 
-$plugin->version   = 2022061622;        // The current plugin version (Date: YYYYMMDDXX).
-$plugin->requires  = 2022041900;        // Requires this Moodle version.
-$plugin->component = 'local_moyclass';      // Full name of the plugin (used for diagnostics)
+use local_moyclass\manager_db;
+use local_moyclass\widgets\manage_lessons;
+
+class teacher {
+    public function render() {
+        global $OUTPUT;
+
+        $lessons = new manage_lessons();
+
+        $managerDB = new manager_db();
+        $managerDB->set_lessons();
+
+        $templatecontext = (object) [
+            'lessons' => $lessons->get_lessons(),
+        ];
+
+        return $OUTPUT->render_from_template('local_moyclass/pages/teacher/container', $templatecontext);
+    }
+}

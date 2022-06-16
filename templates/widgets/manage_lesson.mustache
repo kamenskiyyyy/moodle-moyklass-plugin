@@ -1,0 +1,17 @@
+{{#lesson}}
+<div class="card bg-light container">
+    <div class="row">
+        <div class="col-sm-4 card-body">
+            <h5 class="card-title">{{newDate}}</h5>
+            <h6 class="card-subtitle text-muted">{{begintime}}-{{endtime}}</h6>
+        </div>
+        <div class="col-sm-8 card-body d-flex flex-row justify-content-between align-items-center">
+            <h5 class="card-subtitle mb-2 text-muted">{{name_group}}</h5>
+            {{#status}}
+                <div class="p-2 alert-success border-radius" style="width: 120px;">✅ Проведен</div>
+            {{/status}}
+        </div>
+    </div>
+    {{{students}}}
+</div>
+{{/lesson}}

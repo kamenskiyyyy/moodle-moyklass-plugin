@@ -108,7 +108,7 @@
             <FIELDS>
                 <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
                 <FIELD NAME="lessonid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
-                <FIELD NAME="date" SEQUENCE="false" TYPE="text" NOTNULL="true" COMMENT="Дата проведения"/>
+                <FIELD NAME="date" SEQUENCE="false" TYPE="char" LENGTH="15" NOTNULL="true" COMMENT="Дата проведения"/>
                 <FIELD NAME="begintime" SEQUENCE="false" TYPE="text" NOTNULL="true" COMMENT="Время начала"/>
                 <FIELD NAME="endtime" SEQUENCE="false" TYPE="text" NOTNULL="true" COMMENT="Время окончания"/>
                 <FIELD NAME="createdat" SEQUENCE="false" TYPE="text" NOTNULL="false" COMMENT="Дата создания"/>

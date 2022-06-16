@@ -92,7 +92,7 @@ class lessons {
      * @return mixed
      * @throws \dml_exception
      */
-    public function get_lesson($record) {
+    private function get_lesson($record) {
         global $OUTPUT, $DB, $CFG;
         $lesson = $DB->get_record('local_moyclass_lessons', ["lessonid" => $record->lessonid]);
 
