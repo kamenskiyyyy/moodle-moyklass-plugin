@@ -238,7 +238,7 @@ class manager_db {
      * @throws \dml_transaction_exception
      * @throws dml_exception
      */
-    public function set_lesson_records($lesson) {
+    private function set_lesson_records($lesson) {
         global $DB;
         $results = $lesson['records'];
         $transaction = $DB->start_delegated_transaction();

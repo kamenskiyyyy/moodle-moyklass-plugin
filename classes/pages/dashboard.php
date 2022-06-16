@@ -24,6 +24,7 @@
 
 namespace local_moyclass\pages;
 
+use local_moyclass\manager_db;
 use local_moyclass\widgets\lessons;
 use local_moyclass\widgets\recording_for_lesson;
 use local_moyclass\widgets\subscriptions;
@@ -37,6 +38,11 @@ class dashboard {
         $recording = new recording_for_lesson();
         $lessons = new lessons();
         $subscriptions = new subscriptions();
+
+        $manageDB = new manager_db();
+        $manageDB->set_lessons();
+        $manageDB->set_invoices();
+        $manageDB->set_subscriptions();
 
         $templatecontext = (object) [
             'invoices' => $invoices->get_invoices(),

@@ -35,7 +35,7 @@ class lessons {
      */
     public function get_lessons() {
         global $OUTPUT, $DB, $CFG, $USER;
-        $student = $DB->get_record("local_moyclass_students", ['email' => "kamenev.nikolaj2010@icloud.com"]);
+        $student = $DB->get_record("local_moyclass_students", ['email' => $USER->email]);
         $records = $DB->get_records("local_moyclass_lessonsrecord", ['userid' => $student->studentid, 'visit'=>0], "timestamp", "*", 0, 3);
         $lessons_with_data = '';
 
@@ -58,7 +58,7 @@ class lessons {
 
     public function get_full_lessons() {
         global $OUTPUT, $DB, $USER;
-        $student = $DB->get_record("local_moyclass_students", ['email' => "kamenev.nikolaj2010@icloud.com"]);
+        $student = $DB->get_record("local_moyclass_students", ['email' => $USER->email]);
         $records = $DB->get_records("local_moyclass_lessonsrecord", ['userid' => $student->studentid], "timestamp", "*", 0, 0);
         $lessons_with_data = '';
         $last_lessons_with_data = '';
