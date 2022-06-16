@@ -43,6 +43,9 @@ class dashboard {
         $manageDB->set_lessons();
         $manageDB->set_invoices();
         $manageDB->set_subscriptions();
+        $manageDB->set_payments();
+        $manageDB->set_user_subscriptions();
+        $manageDB->set_classes();
 
         $templatecontext = (object) [
             'invoices' => $invoices->get_invoices(),
