@@ -57,8 +57,6 @@ class sync_users {
      * @throws \dml_transaction_exception
      */
     private function set_users($people) {
-        global $DB;
-        $transaction = $DB->start_delegated_transaction();
         foreach ($people as $person) {
             $is_user = $this->check_user_in_moodle($person->email);
             if ($is_user) {
@@ -70,7 +68,6 @@ class sync_users {
                 $this->send_email_new_user($user, $password);
             }
         }
-        $DB->commit_delegated_transaction($transaction);
     }
 
     /**
@@ -84,7 +81,21 @@ class sync_users {
         try {
             return $DB->get_record('user', ['email' => $email]);
         } catch (dml_exception $e) {
-            return false;
+            return $e;
+        }
+    }
+
+    /**
+     * Проверяем активный ли пользователь для user->suspended
+     *
+     * @param $active
+     * @return int
+     */
+    private function check_active_users($active): int {
+        if ($active == 1) {
+            return 0;
+        } else {
+            return 1;
         }
     }
 
@@ -99,7 +110,7 @@ class sync_users {
     private function update_user($student, $user_id) {
         $user = new stdClass();
         $user->id = $user_id;
-        $user->suspended = $student->isactive;
+        $user->suspended = $this->check_active_users($student->isactive);
         $user->email = strtolower($student->email);
         $names = explode(' ', $student->name);
         $user->lastname = $names[1] ?: "-";
@@ -110,7 +121,11 @@ class sync_users {
         $user->institution = $student->company ?: "";
         $user->department = $student->position ?: "";
 
-        return user_update_user($user, false, false);
+        try {
+            return user_update_user($user, false, false);
+        } catch (moodle_exception $e) {
+            return $e;
+        }
     }
 
     /**
@@ -143,7 +158,7 @@ class sync_users {
         $user->lang = $student->lang ?: core_user::get_property_default('lang');
         $user->confirmed = 1;
         $user->mnethostid = 1;
-        $user->suspended = $student->isactive;
+        $user->suspended = $this->check_active_users($student->isactive);
         $user->email = strtolower($student->email);
         $user->username = strtolower(strstr($student->email, '@', true));
         $names = explode(' ', $student->name);
@@ -155,7 +170,11 @@ class sync_users {
         $user->institution = $student->company ?: "";
         $user->department = $student->position ?: "";
 
-        return user_create_user($user, false, false);
+        try {
+            return user_create_user($user, false, false);
+        } catch (moodle_exception $e) {
+            return $e;
+        }
     }
 
     /**

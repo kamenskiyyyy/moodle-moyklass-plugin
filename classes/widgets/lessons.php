@@ -24,6 +24,7 @@
 
 namespace local_moyclass\widgets;
 
+use core_reportbuilder\local\filters\date;
 use local_moyclass\pages;
 
 class lessons {
@@ -58,7 +59,7 @@ class lessons {
     public function get_full_lessons() {
         global $DB, $USER;
         $student = $DB->get_record("local_moyclass_students", ['email' => $USER->email]);
-        $records = $DB->get_records("local_moyclass_lessonsrecord", ['userid' => $student->studentid], "id DESC", "*", 0, 0);
+        $records = $DB->get_records("local_moyclass_lessonsrecord", ['userid' => $student->studentid, 'visit'=>0], "", "*", 0, 0);
         $lessons_with_data = '';
 
         $error = new pages();
@@ -111,7 +112,8 @@ class lessons {
             'recordId' => $record->recordid,
             'visited' => $record->visit,
             'block_cancel' => $block_cancel,
-            'cancelUrl' => $CFG->wwwroot . '/local/moyclass/cancel-lesson.php'
+            'cancelUrl' => $CFG->wwwroot . '/local/moyclass/cancel-lesson.php',
+            'dayOfWeek' => date('l', strtotime($originalDate)),
         ];
 
         return $OUTPUT->render_from_template('local_moyclass/widgets/lesson', $templatecontext);

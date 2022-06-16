@@ -2,10 +2,11 @@
     <div class="card bg-light">
         <div class="d-flex">
             <div class="col-md-3 card-body">
+                <h5 class="card-title">{{dayOfWeek}}</h5>
                 <h5 class="card-title">{{newDate}}</h5>
                 <h6 class="card-subtitle text-muted">{{begintime}}-{{endtime}}</h6>
                 {{#visited}}
-                    <div class="alert alert-success" style="width: 120px;">Проведен</div>
+                    <div class="mt-3 p-2 alert-success border-radius" style="width: 120px;">✅ Проведен</div>
                 {{/visited}}
             </div>
             <div class="col-md-9 card-body">
@@ -36,7 +37,8 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Нет</button>
-                <button type="button" class="btn btn-primary" onclick="location.href='{{cancelUrl}}?lessonid={{recordId}}'">Да</button>
+                <button type="button" class="btn btn-primary"
+                        onclick="location.href='{{cancelUrl}}?lessonid={{recordId}}'">Да</button>
             </div>
         </div>
     </div>

@@ -53,15 +53,23 @@ class recording_for_lesson {
                 
                 setInterval(() => {
                     set_email_value(allInputEmails[0]);
-                }, 2000);
+                }, 3000);
                 
                 setInterval(() => {
                     set_email_value(allInputEmails[1]);
-                }, 2000);
+                }, 3000);
                 
                 setInterval(() => {
                     set_email_value(allInputEmails[2]);
-                }, 2000);
+                }, 3000);
+                
+                const errorPopup = document.querySelector(\".moodle-dialogue-exception\");
+                
+                setInterval(() => {
+                    if (errorPopup) {
+                        errorPopup.remove();
+                    }
+                }, 1000);
 
               </script>";
     }

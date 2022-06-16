@@ -54,20 +54,6 @@ class manager_db {
     }
 
     /**
-     * Проверяем статус работника. Если работает - вернет 1, если нет - вернет 0
-     *
-     * @param $isWork
-     * @return int
-     */
-    private function check_is_work($isWork): int {
-        if ($isWork == 1) {
-            return 0;
-        } else {
-            return 1;
-        }
-    }
-
-    /**
      * Устанавливаем работников школы
      *
      * @return void
@@ -86,7 +72,7 @@ class manager_db {
             $dataobject->name = $result['name'];
             $dataobject->phone = $result['phone'];
             $dataobject->email = $result['email'];
-            $dataobject->isactive = $this->check_is_work($result['isWork']);
+            $dataobject->isactive = $result['isWork'];
             $DB->insert_record('local_moyclass_managers', $dataobject, false);
         }
         $DB->commit_delegated_transaction($transaction);
@@ -100,9 +86,9 @@ class manager_db {
      */
     private function check_status_client($clientstateid): int {
         if ($clientstateid == 121696) {
-            return 0;
-        } else {
             return 1;
+        } else {
+            return 0;
         }
     }
 
