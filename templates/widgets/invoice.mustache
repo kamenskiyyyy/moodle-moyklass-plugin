@@ -1,11 +1,11 @@
 {{#invoice}}
-    <div class="card  alert-danger bg-light">
-        <div class="d-flex  alert-danger">
-            <div class="col-md-9 card-body">
+    <div class="card container alert-danger bg-light">
+        <div class="row alert-danger">
+            <div class="col-sm-9 card-body">
                 <h5 class="card-title">Счет на оплату</h5>
                 <h6 class="card-subtitle text-muted">{{name}}</h6>
             </div>
-            <div class="col-md-3 card-body">
+            <div class="col-sm-3 card-body">
                 <h5 class="card-title">{{price}} &#8381;</h5>
                 <button class="btn btn-primary" onclick="location.href='https://pay.tvoyklass.com/key/{{payLinkKey}}?payFor=invoice&invoiceId={{invoiceid}}'">Оплатить</button>
             </div>

@@ -205,6 +205,7 @@ class manager_db {
     public function set_lessons() {
         global $DB;
         $DB->delete_records('local_moyclass_lessons');
+        $DB->delete_records('local_moyclass_lessonsrecord');
         $api_service = new api_service();
         $results = $api_service->get_lessons();
         $transaction = $DB->start_delegated_transaction();
@@ -220,7 +221,12 @@ class manager_db {
             $dataobject->comment = $result['comment'];
             $dataobject->maxstudents = $result['maxStudents'];
             $dataobject->teacherids = json_encode($result['teacherIds']);
-            $DB->insert_record('local_moyclass_lessons', $dataobject, false);
+            try {
+                $this->set_lesson_records($result);
+                $DB->insert_record('local_moyclass_lessons', $dataobject, false);
+            } catch (dml_exception $e) {
+                return $e;
+            }
         }
         $DB->commit_delegated_transaction($transaction);
     }
@@ -232,22 +238,28 @@ class manager_db {
      * @throws \dml_transaction_exception
      * @throws dml_exception
      */
-    public function set_lesson_records() {
+    private function set_lesson_records($lesson) {
         global $DB;
-        $DB->delete_records('local_moyclass_lessonsrecord');
-        $api_service = new api_service();
-        $results = $api_service->get_lesson_records();
+        $results = $lesson['records'];
         $transaction = $DB->start_delegated_transaction();
         foreach ($results as $result) {
             $dataobject = new stdClass();
             $dataobject->recordid = $result['id'];
+            $dataobject->date = $lesson['date'];
+            $dataobject->timestamp = strtotime($lesson['date'] . $lesson['beginTime']);
+            $dataobject->begintime = $lesson['beginTime'];
+            $dataobject->endtime = $lesson['endTime'];
             $dataobject->userid = $result['userId'];
             $dataobject->lessonid = $result['lessonId'];
             $dataobject->free = $result['free'];
             $dataobject->visit = $result['visit'];
             $dataobject->goodreason = $result['goodReason'];
             $dataobject->test = $result['test'];
-            $DB->insert_record('local_moyclass_lessonsrecord', $dataobject, false);
+            try {
+                $DB->insert_record('local_moyclass_lessonsrecord', $dataobject, false);
+            } catch (dml_exception $e) {
+                return $e;
+            }
         }
         $DB->commit_delegated_transaction($transaction);
     }
