@@ -40,6 +40,8 @@ echo $OUTPUT->header();
 $managerDB = new \local_moyclass\manager_db();
 $managerDB->set_managers();
 
+echo get_config('local_moyclass', 'sendEmails');
+
 $dashboard = new dashboard();
 echo $dashboard->render();
 

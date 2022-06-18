@@ -39,11 +39,6 @@ class lessons {
         $records = $DB->get_records("local_moyclass_lessonsrecord", ['userid' => $student->studentid, 'visit'=>0], "timestamp", "*", 0, 3);
         $lessons_with_data = '';
 
-        $error = new pages();
-        if (!$records) {
-            return $error->error_alert("Записи на занятия не найдены");
-        }
-
         foreach ($records as $record) {
             $lessons_with_data .= $this->get_lesson($record);
         }
@@ -96,9 +91,8 @@ class lessons {
         global $OUTPUT, $DB, $CFG;
         $lesson = $DB->get_record('local_moyclass_lessons', ["lessonid" => $record->lessonid]);
 
-        $error = new pages();
         if (!$lesson) {
-            return $error->error_alert('Урок не найден');
+            return null;
         }
 
         $name_group = $DB->get_record('local_moyclass_classes', ['classid' => "$lesson->classid"]);

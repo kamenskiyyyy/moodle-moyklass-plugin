@@ -34,3 +34,5 @@ $string['moyclass_delete_record_fail'] = 'Error cancel lesson';
 $string['moyclass_delete_record_success'] = 'Success cancel lesson';
 $string['moyclass_page_lessons_title'] = 'Lessons';
 $string['moyclass_page_subscriptions_title'] = 'Subscriptions';
+$string['moyclass_settings_sendemail'] = 'Notifications';
+$string['moyclass_settings_sendemail_desc'] = 'Should send email notifications to users?';

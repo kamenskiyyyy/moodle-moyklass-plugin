@@ -1,4 +1,5 @@
 <div class="accordion" id="accordionExample">
+    {{#subscriptions_active}}
     <div class="card border-success">
         <div class="card-header" id="headingOne">
             <h2 class="mb-0">
@@ -16,6 +17,8 @@
             </div>
         </div>
     </div>
+    {{/subscriptions_active}}
+    {{#subscriptions_inactive}}
     <div class="card border-secondary">
         <div class="card-header" id="headingTwo">
             <h2 class="mb-0">
@@ -32,4 +35,5 @@
             </div>
         </div>
     </div>
+    {{/subscriptions_inactive}}
 </div>

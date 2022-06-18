@@ -58,7 +58,6 @@ class manager_db {
      */
     public function set_managers() {
         global $DB;
-        $DB->delete_records('local_moyclass_managers');
         $api_service = new api_service();
         $results = $api_service->get_managers();
         $transaction = $DB->start_delegated_transaction();
@@ -106,7 +105,6 @@ class manager_db {
      */
     public function set_students() {
         global $DB;
-        $DB->delete_records('local_moyclass_students');
         $api_service = new api_service();
         $results = $api_service->get_students();
         $transaction = $DB->start_delegated_transaction();

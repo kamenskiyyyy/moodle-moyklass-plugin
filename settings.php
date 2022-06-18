@@ -29,7 +29,7 @@ if ($hassiteconfig) {
     $settings = new admin_settingpage('local_moyclass', get_string('moyclass_settings', 'local_moyclass'));
     $ADMIN->add('local_moyclass_category', $settings);
 
-    $settings->add(new admin_setting_configtext('local_moyclass/apikey', get_string('moyclass_settings_apikey', 'local_moyclass'),
-        get_string('moyclass_settings_apikey_desc', 'local_moyclass'), ''));
+    $settings->add(new admin_setting_configtext('local_moyclass/apikey', get_string('moyclass_settings_apikey', 'local_moyclass'), get_string('moyclass_settings_apikey_desc', 'local_moyclass'), ''));
 
+    $settings->add(new admin_setting_configcheckbox('local_moyclass/sendEmails', get_string('moyclass_settings_sendemail', 'local_moyclass'), get_string('moyclass_settings_sendemail_desc', 'local_moyclass'), '1'));
 }
