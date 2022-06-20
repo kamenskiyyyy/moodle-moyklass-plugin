@@ -39,6 +39,7 @@ class manager_db {
      */
     public function set_auth_token(): bool {
         global $DB;
+        $DB->delete_records('local_moyclass_auth');
         $api_service = new api_service();
         $result = $api_service->get_auth_token();
         $dataobject = new stdClass();
@@ -158,6 +159,7 @@ class manager_db {
      */
     public function set_joins() {
         global $DB;
+        $DB->delete_records('local_moyclass_joins');
         $api_service = new api_service();
         $results = $api_service->get_joins();
         $transaction = $DB->start_delegated_transaction();
@@ -196,6 +198,7 @@ class manager_db {
      */
     public function set_classes() {
         global $DB;
+        $DB->delete_records('local_moyclass_classes');
         $api_service = new api_service();
         $results = $api_service->get_classes();
         $transaction = $DB->start_delegated_transaction();
@@ -232,6 +235,8 @@ class manager_db {
      */
     public function set_lessons() {
         global $DB;
+        $DB->delete_records('local_moyclass_lessons');
+        $DB->delete_records('local_moyclass_lessonsrecord');
         $api_service = new api_service();
         $results = $api_service->get_lessons();
         $transaction = $DB->start_delegated_transaction();
@@ -311,6 +316,7 @@ class manager_db {
      */
     public function set_client_statuses() {
         global $DB;
+        $DB->delete_records('local_moyclass_clientstatuse');
         $api_service = new api_service();
         $results = $api_service->get_client_statuses();
         $transaction = $DB->start_delegated_transaction();
@@ -341,6 +347,7 @@ class manager_db {
      */
     public function set_subscriptions() {
         global $DB;
+        $DB->delete_records('local_moyclass_subscriptions');
         $api_service = new api_service();
         $results = $api_service->get_subscriptions();
         $transaction = $DB->start_delegated_transaction();
@@ -374,6 +381,7 @@ class manager_db {
      */
     public function set_user_subscriptions() {
         global $DB;
+        $DB->delete_records('local_moyclass_usersubscript');
         $api_service = new api_service();
         $results = $api_service->get_user_subscriptions();
         $transaction = $DB->start_delegated_transaction();
@@ -420,6 +428,7 @@ class manager_db {
      */
     public function set_payments() {
         global $DB;
+        $DB->delete_records('local_moyclass_payments');
         $api_service = new api_service();
         $results = $api_service->get_payments();
         $transaction = $DB->start_delegated_transaction();
@@ -455,6 +464,7 @@ class manager_db {
      */
     public function set_invoices() {
         global $DB;
+        $DB->delete_records('local_moyclass_invoices');
         $api_service = new api_service();
         $results = $api_service->get_invoices();
         $transaction = $DB->start_delegated_transaction();

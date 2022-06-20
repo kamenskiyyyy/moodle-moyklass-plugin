@@ -36,7 +36,8 @@ class lessons {
     public function get_lessons() {
         global $OUTPUT, $DB, $CFG, $USER;
         $student = $DB->get_record("local_moyclass_students", ['email' => $USER->email]);
-        $records = $DB->get_records("local_moyclass_lessonsrecord", ['userid' => $student->studentid, 'visit'=>0], "timestamp", "*", 0, 3);
+        $sql = "SELECT * FROM {local_moyclass_lessonsrecord} WHERE `timestamp` > :now AND `userid` = :userid AND `visit` = 0 ORDER BY `timestamp` ASC LIMIT 3";
+        $records = $DB->get_records_sql($sql, ['now'=>strtotime('now'), 'userid'=>$student->studentid]);
         $lessons_with_data = '';
 
         foreach ($records as $record) {
@@ -54,7 +55,7 @@ class lessons {
     public function get_full_lessons() {
         global $OUTPUT, $DB, $USER;
         $student = $DB->get_record("local_moyclass_students", ['email' => $USER->email]);
-        $records = $DB->get_records("local_moyclass_lessonsrecord", ['userid' => $student->studentid], "timestamp", "*", 0, 0);
+        $records = $DB->get_records("local_moyclass_lessonsrecord", ['userid' => $student->studentid], "timestamp");
         $lessons_with_data = '';
         $last_lessons_with_data = '';
 
@@ -106,7 +107,7 @@ class lessons {
         $originalDate = $lesson->date;
         $newDate = date('d.m.Y', strtotime($originalDate));
 
-        $block_cancel = strtotime("$lesson->date $lesson->begintime")-strtotime('now') <= 3600;
+        $block_cancel = $record->timestamp - strtotime('now') <= 3600;
 
         $templatecontext = (object) [
             'lesson' => $lesson,

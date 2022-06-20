@@ -86,16 +86,6 @@ $tasks = [
         'disabled' => 0
     ],
     [
-        'classname' => '\local_moyclass\task\upgrade_lessons_records',
-        'blocking' => 0,
-        'minute' => '*/15',
-        'hour' => '*',
-        'day' => '*',
-        'month' => '*',
-        'dayofweek' => '*',
-        'disabled' => 0
-    ],
-    [
         'classname' => '\local_moyclass\task\upgrade_managers',
         'blocking' => 0,
         'minute' => '*/15',
