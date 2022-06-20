@@ -24,7 +24,6 @@
 
 namespace local_moyclass\widgets;
 
-use core_reportbuilder\local\filters\date;
 use local_moyclass\pages;
 
 class lessons {
