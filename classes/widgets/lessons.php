@@ -96,7 +96,7 @@ class lessons {
             return null;
         }
 
-        $name_group = $DB->get_record('local_moyclass_classes', ['classid' => "$lesson->classid"]);
+        $name_group = $DB->get_record('local_moyclass_classes', ['classid' => $lesson->classid]);
         $teachers_array = json_decode($lesson->teacherids);
         $teachers_string = '';
         foreach ($teachers_array as $teacher) {
