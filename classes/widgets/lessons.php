@@ -36,7 +36,7 @@ class lessons {
         global $OUTPUT, $DB, $CFG, $USER;
         $student = $DB->get_record("local_moyclass_students", ['email' => $USER->email]);
         $sql = "SELECT * FROM {local_moyclass_lessonsrecord} WHERE `timestamp` > :now AND `userid` = :userid AND `visit` = 0 ORDER BY `timestamp` ASC LIMIT 3";
-        $records = $DB->get_records_sql($sql, ['now'=>strtotime('now'), 'userid'=>$student->studentid]);
+        $records = $DB->get_records_sql($sql, ['now' => strtotime('now'), 'userid' => $student->studentid]);
         $lessons_with_data = '';
 
         foreach ($records as $record) {
@@ -57,6 +57,7 @@ class lessons {
         $records = $DB->get_records("local_moyclass_lessonsrecord", ['userid' => $student->studentid], "timestamp");
         $lessons_with_data = '';
         $last_lessons_with_data = '';
+        $datenow = strtotime('now');
 
         $error = new pages();
         if (!$records) {
@@ -64,7 +65,7 @@ class lessons {
         }
 
         foreach ($records as $record) {
-            if ($record->visit == 1) {
+            if ($record->timestamp < $datenow) {
                 $last_lessons_with_data .= $this->get_lesson($record);
             } else {
                 $lessons_with_data .= $this->get_lesson($record);
