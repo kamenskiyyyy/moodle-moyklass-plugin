@@ -189,7 +189,11 @@ class sync_users {
 
         $user = core_user::get_user($userid);
 
-        $message = $emails->get_welcome_email($user->firstname, $user->username, $password);
-        $notification->send_email($userid, 'Welcome to Just Study', $message);
+        $is_allow_emails = get_config('local_moyclass', 'sendEmails');
+
+        if ($is_allow_emails) {
+            $message = $emails->get_welcome_email($user->firstname, $user->username, $password);
+            $notification->send_email($userid, 'Welcome to Just Study', $message);
+        }
     }
 }

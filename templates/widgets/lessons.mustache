@@ -7,6 +7,12 @@
 
             {{{lessons}}}
 
+            {{^lessons}}
+                <div class="alert alert-warning" role="alert" data-mdb-color="warning">
+                    Записи на ближайшие занятия отсутствуют. Вы можете записаться на занятия выше ☝🏻
+                </div>
+            {{/lessons}}
+
             <button class="btn btn-outline-primary" onclick="location.href='{{linkPageLessons}}'">Смотреть все</button>
 
         </div>

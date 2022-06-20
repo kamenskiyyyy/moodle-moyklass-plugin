@@ -34,3 +34,5 @@ $string['moyclass_delete_record_fail'] = 'Ошибка отмены заняти
 $string['moyclass_delete_record_success'] = 'Урок успешно отменен';
 $string['moyclass_page_lessons_title'] = 'Занятия';
 $string['moyclass_page_subscriptions_title'] = 'Абонементы';
+$string['moyclass_settings_sendemail'] = 'Уведомления';
+$string['moyclass_settings_sendemail_desc'] = 'Присылать ли email-уведомления пользователям?';

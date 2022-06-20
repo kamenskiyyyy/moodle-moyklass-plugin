@@ -63,11 +63,18 @@ class subscriptions {
         $newBeginDate = date('d.m', strtotime($user_subscription->begindate));
         $newEndDate = date('d.m.Y', strtotime($user_subscription->enddate));
 
+        $lessonsLeft = $user_subscription->visitcount - $user_subscription->totalvisited;
+        $oneClassLeft = "Осталось уроков: $lessonsLeft из $subscription->visitcount";
+
+        if ($subscription->visitcount == 0) {
+            $oneClassLeft = "Осталось уроков: &#8734;";
+        }
+
         $templatecontext = (object) [
             'subscription' => $user_subscription,
             'name' => $subscription->name,
             'newSellDate' => $newSellDate,
-            'oneClassLeft'=> $user_subscription->visitcount - $user_subscription->totalvisited,
+            'oneClassLeft'=> $oneClassLeft,
             'newBeginDate'=>$newBeginDate,
             'newEndDate'=>$newEndDate,
         ];

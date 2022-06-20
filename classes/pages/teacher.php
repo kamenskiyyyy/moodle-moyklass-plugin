@@ -22,34 +22,24 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_moyclass\task;
+namespace local_moyclass\pages;
 
-use dml_exception;
 use local_moyclass\manager_db;
+use local_moyclass\widgets\manage_lessons;
 
-defined('MOODLE_INTERNAL') || die();
+class teacher {
+    public function render() {
+        global $OUTPUT;
 
-/**
- * Автоматическая синхронизация информации о записях на все уроки из CRM Мой класс в LMS Moodle
- */
-class upgrade_lessons_records extends \core\task\scheduled_task {
-    /**
-     * Return the task's name as shown in admin screens.
-     *
-     * @return string
-     */
-    public function get_name() {
-        return "Обновить информацию о записях на все уроки школы";
-    }
+        $lessons = new manage_lessons();
 
-    /**
-     * Execute the task.
-     */
-    public function execute() {
-        $manager = new manager_db();
-        try {
-            $manager->set_lesson_records();
-        } catch (dml_exception $e) {
-        }
+        $managerDB = new manager_db();
+        $managerDB->set_lessons();
+
+        $templatecontext = (object) [
+            'lessons' => $lessons->get_lessons(),
+        ];
+
+        return $OUTPUT->render_from_template('local_moyclass/pages/teacher/container', $templatecontext);
     }
 }

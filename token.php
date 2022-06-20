@@ -22,14 +22,16 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-if ($hassiteconfig) {
+require_once(__DIR__ . '/../../config.php');
 
-    $ADMIN->add('localplugins', new admin_category('local_moyclass_category', get_string('pluginname', 'local_moyclass')));
+require_login();
 
-    $settings = new admin_settingpage('local_moyclass', get_string('moyclass_settings', 'local_moyclass'));
-    $ADMIN->add('local_moyclass_category', $settings);
+$PAGE->set_url(new moodle_url("/local/moyclass/cancel-lesson.php"));
+$PAGE->set_context(\context_system::instance());
 
-    $settings->add(new admin_setting_configtext('local_moyclass/apikey', get_string('moyclass_settings_apikey', 'local_moyclass'), get_string('moyclass_settings_apikey_desc', 'local_moyclass'), ''));
+$managerDB = new \local_moyclass\manager_db();
 
-    $settings->add(new admin_setting_configcheckbox('local_moyclass/sendEmails', get_string('moyclass_settings_sendemail', 'local_moyclass'), get_string('moyclass_settings_sendemail_desc', 'local_moyclass'), '1'));
-}
+$managerDB->set_auth_token();
+
+redirect($CFG->wwwroot . '/my', "Токен обновлен с:");
+

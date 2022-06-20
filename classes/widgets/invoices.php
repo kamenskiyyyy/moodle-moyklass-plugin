@@ -45,6 +45,10 @@ class invoices {
             }
         }
 
+        if (!$invoices_with_render) {
+            return null;
+        }
+
         $templatecontext = (object) ['invoices' => $invoices_with_render];
 
         return $OUTPUT->render_from_template('local_moyclass/widgets/invoices', $templatecontext);
@@ -57,9 +61,8 @@ class invoices {
             $DB->get_record('local_moyclass_usersubscript', ["usersubscriptionid" => $invoice->usersubscriptionid]);
         $subscription = $DB->get_record('local_moyclass_subscriptions', ["subscriptionid" => $user_subscription->subscriptionid]);
 
-        $error = new pages();
         if (!$user_subscription || !$subscription) {
-            return $error->error_alert('Счет не найден');
+            return null;
         }
 
         $templatecontext = (object) [

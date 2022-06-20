@@ -24,7 +24,6 @@
 
 namespace local_moyclass\widgets;
 
-use core_reportbuilder\local\filters\date;
 use local_moyclass\pages;
 
 class lessons {
@@ -36,13 +35,9 @@ class lessons {
     public function get_lessons() {
         global $OUTPUT, $DB, $CFG, $USER;
         $student = $DB->get_record("local_moyclass_students", ['email' => $USER->email]);
-        $records = $DB->get_records("local_moyclass_lessonsrecord", ['userid' => $student->studentid, 'visit'=>0], "timestamp", "*", 0, 3);
+        $sql = "SELECT * FROM {local_moyclass_lessonsrecord} WHERE `timestamp` > :now AND `userid` = :userid AND `visit` = 0 ORDER BY `timestamp` ASC LIMIT 3";
+        $records = $DB->get_records_sql($sql, ['now' => strtotime('now'), 'userid' => $student->studentid]);
         $lessons_with_data = '';
-
-        $error = new pages();
-        if (!$records) {
-            return $error->error_alert("Записи на занятия не найдены");
-        }
 
         foreach ($records as $record) {
             $lessons_with_data .= $this->get_lesson($record);
@@ -59,9 +54,10 @@ class lessons {
     public function get_full_lessons() {
         global $OUTPUT, $DB, $USER;
         $student = $DB->get_record("local_moyclass_students", ['email' => $USER->email]);
-        $records = $DB->get_records("local_moyclass_lessonsrecord", ['userid' => $student->studentid], "timestamp", "*", 0, 0);
+        $records = $DB->get_records("local_moyclass_lessonsrecord", ['userid' => $student->studentid], "timestamp");
         $lessons_with_data = '';
         $last_lessons_with_data = '';
+        $datenow = strtotime('now');
 
         $error = new pages();
         if (!$records) {
@@ -69,7 +65,7 @@ class lessons {
         }
 
         foreach ($records as $record) {
-            if ($record->visit == 1) {
+            if ($record->timestamp < $datenow) {
                 $last_lessons_with_data .= $this->get_lesson($record);
             } else {
                 $lessons_with_data .= $this->get_lesson($record);
@@ -92,16 +88,15 @@ class lessons {
      * @return mixed
      * @throws \dml_exception
      */
-    public function get_lesson($record) {
+    private function get_lesson($record) {
         global $OUTPUT, $DB, $CFG;
         $lesson = $DB->get_record('local_moyclass_lessons', ["lessonid" => $record->lessonid]);
 
-        $error = new pages();
         if (!$lesson) {
-            return $error->error_alert('Урок не найден');
+            return null;
         }
 
-        $name_group = $DB->get_record('local_moyclass_classes', ['classid' => "$lesson->classid"]);
+        $name_group = $DB->get_record('local_moyclass_classes', ['classid' => $lesson->classid]);
         $teachers_array = json_decode($lesson->teacherids);
         $teachers_string = '';
         foreach ($teachers_array as $teacher) {
@@ -112,7 +107,7 @@ class lessons {
         $originalDate = $lesson->date;
         $newDate = date('d.m.Y', strtotime($originalDate));
 
-        $block_cancel = strtotime("$lesson->date $lesson->begintime")-strtotime('now') <= 3600;
+        $block_cancel = $record->timestamp - strtotime('now') <= 3600;
 
         $templatecontext = (object) [
             'lesson' => $lesson,
